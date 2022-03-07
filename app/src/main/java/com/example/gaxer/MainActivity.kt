@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity(){
@@ -30,6 +32,14 @@ class MainActivity : AppCompatActivity(){
                 if (responseStr != null) {
                     Log.d("OkHttpGET", responseStr)
                 }
+                val strArray:String = responseStr.toString()
+                val jsonArray = JSONArray(strArray)
+                val test:String = jsonArray.getString(0,)
+                Log.d("json", test)
+                val json:String = test
+                val jsonObject = JSONObject(json)
+                val test2:String = jsonObject.getString("gas1")
+                Log.d("json", test2)
             }.start()
         }
     }
