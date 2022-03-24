@@ -7,18 +7,22 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
+/*
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+*/
+/*
+import androidx.core.content.ContextCompat
+import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+ */
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
@@ -26,14 +30,23 @@ import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity(){
+    private lateinit var lineChart: ChartSetting
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        lineChart = ChartSetting(findViewById(R.id.lineChart), null)
         val responseView = findViewById<TextView>(R.id.textView)
         val button = findViewById<Button>(R.id.button)
+        val entries = ArrayList<Entry>()
+        entries.add(Entry(0F, 4F))
+        entries.add(Entry(1f, 1f))
+        entries.add(Entry(2f, 2f))
+        entries.add(Entry(3f, 4f))
+        entries.add(Entry(5f, 10f))
         button.setOnClickListener() {
             Toast.makeText(this, "hello toast", Toast.LENGTH_SHORT).show()
+            lineChart.updateData(entries)
         }
         val buttonGetRequest = findViewById<Button>(R.id.btn_get)
         buttonGetRequest.setOnClickListener() {
@@ -42,7 +55,7 @@ class MainActivity : AppCompatActivity(){
                 val request = Request.Builder()
                     .url("https://gaxer.ddns.net:443/data/?tok=123456abcd&record=1").build()
                 val response = client.newCall(request).execute()
-                val responseStr = response.body()?.string()
+                val responseStr:String? = response.body()?.string()
                 runOnUiThread { responseView.text = "Success" }
                 if (responseStr != null) {
                     Log.d("OkHttpGET", responseStr)
@@ -57,6 +70,8 @@ class MainActivity : AppCompatActivity(){
                 Log.d("json", test2)
             }.start()
         }
+
+        /*
         val lineChart = findViewById<LineChart>(R.id.lineChart)
         val entries = ArrayList<Entry>()
         entries.add(Entry(0F, 4F))
@@ -90,6 +105,7 @@ class MainActivity : AppCompatActivity(){
         lineChart.animateX(2500)
         //refresh
         lineChart.invalidate()
+        */
         /*
         val pieChart = findViewById<PieChart>(R.id.pieChart)
         pieChart.setNoDataText("老哥，我還沒吃飯呢，快給我數據")
