@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 */
+
 /*
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.PieChart
@@ -48,7 +49,16 @@ class MainActivity : AppCompatActivity(){
             Toast.makeText(this, "hello toast", Toast.LENGTH_SHORT).show()
             lineChart.updateData(entries)
         }
+        val getData = HttpGet()
         val buttonGetRequest = findViewById<Button>(R.id.btn_get)
+        buttonGetRequest.setOnClickListener{
+            Thread{
+                val url = "https://gaxer.ddns.net:443/data/?tok=123456abcd&record=2"
+                val response:String? = getData.getData(url)
+                val parseTest:String? = getData.parseData(response)
+            }.start()
+        }
+        /*
         buttonGetRequest.setOnClickListener() {
             Thread() {
                 val client = OkHttpClient()
@@ -70,6 +80,8 @@ class MainActivity : AppCompatActivity(){
                 Log.d("json", test2)
             }.start()
         }
+         */
+
 
         /*
         val lineChart = findViewById<LineChart>(R.id.lineChart)
