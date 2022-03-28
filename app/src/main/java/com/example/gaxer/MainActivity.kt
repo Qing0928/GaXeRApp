@@ -2,7 +2,6 @@ package com.example.gaxer
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -24,10 +23,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.formatter.ValueFormatter
  */
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity(){
@@ -45,6 +40,7 @@ class MainActivity : AppCompatActivity(){
         entries.add(Entry(2f, 2f))
         entries.add(Entry(3f, 4f))
         entries.add(Entry(5f, 10f))
+        entries.add(Entry(5f, 10f))
         button.setOnClickListener() {
             Toast.makeText(this, "hello toast", Toast.LENGTH_SHORT).show()
             lineChart.updateData(entries)
@@ -53,9 +49,10 @@ class MainActivity : AppCompatActivity(){
         val buttonGetRequest = findViewById<Button>(R.id.btn_get)
         buttonGetRequest.setOnClickListener{
             Thread{
-                val url = "https://gaxer.ddns.net:443/data/?tok=123456abcd&record=2"
+                val url = "https://gaxer.ddns.net:443/data/?tok=123456abcd&record=6"
                 val response:String? = getData.getData(url)
-                val parseTest:String? = getData.parseData(response)
+                val parseTest: MutableList<String> = getData.parseDataTime(response)
+                val parseTestRemain: MutableList<String> = getData.parseDataRemaining(response)
             }.start()
         }
         /*

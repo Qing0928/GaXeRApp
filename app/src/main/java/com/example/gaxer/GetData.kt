@@ -14,17 +14,52 @@ class HttpGet(){
         val response = client.newCall(request).execute()
         responseStr = response.body()?.string()
         if (responseStr != null){
-            Log.d("OKHttp", responseStr)
+            Log.d("OKHttp", "Success")
         }
         else{
             Log.d("OKHttp", "Error")
         }
         return responseStr
     }
-    fun parseData(responseArray:String?): String? {
+    fun parseDataTime(responseArray:String?): MutableList<String> {
         val responseJson = JSONArray(responseArray)
-        val gas1:String = responseJson.getString(0)
-        Log.d("Json", gas1)
-        return null
+        var gasName = ""
+        val gasTime = mutableListOf<String>()
+        for(i in 0 until responseJson.length()){
+            val tmp = JSONObject(responseJson.getString(i))
+            for(keyName in tmp.keys()){
+                gasName = keyName
+                break
+            }
+            val gas = JSONObject(tmp.getString(gasName))
+            val dataBody = JSONObject(gas.getString("data"))
+            val time = dataBody.getString("time")
+            gasTime.add(time)
+        }
+        for (i in gasTime){
+            Log.d("time", i)
+        }
+        return gasTime
+    }
+    fun parseDataRemaining(responseArray:String?): MutableList<String>{
+        val responseJson = JSONArray(responseArray)
+        var gasName = ""
+        val gasRemaining = mutableListOf<String>()
+        for(i in 0 until responseJson.length()){
+            val tmp = JSONObject(responseJson.getString(i))
+            for(keyName in tmp.keys()){
+                gasName = keyName
+                break
+            }
+            val gas = JSONObject(tmp.getString(gasName))
+            val dataBody = JSONObject(gas.getString("data"))
+            val remaining = dataBody.getString("remaining")
+
+            gasRemaining.add(remaining)
+        }
+        for (i in gasRemaining){
+            Log.d("remaining", i)
+        }
+        return gasRemaining
     }
 }
