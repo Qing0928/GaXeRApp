@@ -7,6 +7,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.data.Entry
+import org.json.JSONObject
+
 /*
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.LineData
@@ -31,90 +33,48 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        lineChart = ChartSetting(findViewById(R.id.lineChart), null)
-        val responseView = findViewById<TextView>(R.id.textView)
+
         val button = findViewById<Button>(R.id.button)
-        val entries = ArrayList<Entry>()
-        entries.add(Entry(0F, 4F))
-        entries.add(Entry(1f, 1f))
-        entries.add(Entry(2f, 2f))
-        entries.add(Entry(3f, 4f))
-        entries.add(Entry(5f, 10f))
-        entries.add(Entry(5f, 10f))
         button.setOnClickListener() {
             Toast.makeText(this, "hello toast", Toast.LENGTH_SHORT).show()
-            lineChart.updateData(entries)
         }
-        val getData = HttpGet()
-        val buttonGetRequest = findViewById<Button>(R.id.btn_get)
-        buttonGetRequest.setOnClickListener{
-            Thread{
-                val url = "https://gaxer.ddns.net:443/data/?tok=123456abcd&record=6"
-                val response:String? = getData.getData(url)
-                val parseTest: MutableList<String> = getData.parseDataTime(response)
-                val parseTestRemain: MutableList<String> = getData.parseDataRemaining(response)
-            }.start()
-        }
-        /*
-        buttonGetRequest.setOnClickListener() {
-            Thread() {
-                val client = OkHttpClient()
-                val request = Request.Builder()
-                    .url("https://gaxer.ddns.net:443/data/?tok=123456abcd&record=1").build()
-                val response = client.newCall(request).execute()
-                val responseStr:String? = response.body()?.string()
-                runOnUiThread { responseView.text = "Success" }
-                if (responseStr != null) {
-                    Log.d("OkHttpGET", responseStr)
+
+        lineChart = ChartSetting(findViewById(R.id.lineChart), null)
+
+        val getData = DataProcess()
+        val nowTemp = findViewById<TextView>(R.id.nowTemp)
+        val nowGas = findViewById<TextView>(R.id.nowGas)
+        val nowBattery = findViewById<TextView>(R.id.nowBattery)
+        Thread{
+            val url = "https://gaxer.ddns.net/resident?tok=123456abcd"
+            val response:String? = getData.getData(url)
+            if (response != null){
+                val residentData = JSONObject(response)
+                runOnUiThread{
+                    nowTemp.text = residentData.getString("temp") + "℃"
+                    nowBattery.text = residentData.getString("battery") + "%"
+                    nowGas.text = residentData.getString("gas") + "ppm"
                 }
-                val strArray: String = responseStr.toString()
-                val jsonArray = JSONArray(strArray)
-                val test: String = jsonArray.getString(0)
-                Log.d("json", test)
-                val json: String = test
-                val jsonObject = JSONObject(json)
-                val test2: String = jsonObject.getString("gas1")
-                Log.d("json", test2)
+            }
+
+        }.start()
+
+        val xAxisData = ArrayList<Entry>()
+        val btnGet = findViewById<Button>(R.id.btn_get)
+        btnGet.setOnClickListener{
+            Thread{
+                xAxisData.clear()
+                val url = "https://gaxer.ddns.net/data/?tok=123456abcd&record=6"
+                val response:String? = getData.getData(url)
+                val xLabel: MutableList<String> = getData.parseDataTime(response)
+                val remain: MutableList<String> = getData.parseDataRemaining(response)
+                for ((xAxis, i) in remain.withIndex()){//(xAxis, i)>>(index, value)
+                    xAxisData.add(Entry(xAxis.toFloat(), i.toFloat()))
+                }
+                lineChart.updateData(xAxisData, xLabel)
             }.start()
         }
-         */
 
-
-        /*
-        val lineChart = findViewById<LineChart>(R.id.lineChart)
-        val entries = ArrayList<Entry>()
-        entries.add(Entry(0F, 4F))
-        entries.add(Entry(1f, 1f))
-        entries.add(Entry(2f, 2f))
-        entries.add(Entry(3f, 4f))
-        entries.add(Entry(5f, 10f))
-        val months:MutableList<String> = ArrayList()
-        months.add("Jan")
-        months.add("Feb")
-        months.add("Mar")
-        months.add("Apr")
-        months.add("May")
-        months.add("June")
-        val dataset = LineDataSet(entries, "Test")
-        val xAxis = lineChart.xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = IndexAxisValueFormatter(months)
-        //val months = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "June")
-
-        val yAxisRight = lineChart.axisRight
-        yAxisRight.setEnabled(false)
-
-        val yAxisLeft = lineChart.axisLeft
-        yAxisLeft.setGranularity(1f)
-
-        // Setting Data
-        val data = LineData(dataset)
-        //lineChart.setData(data)
-        lineChart.data = data
-        lineChart.animateX(2500)
-        //refresh
-        lineChart.invalidate()
-        */
         /*
         val pieChart = findViewById<PieChart>(R.id.pieChart)
         pieChart.setNoDataText("老哥，我還沒吃飯呢，快給我數據")

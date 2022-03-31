@@ -16,48 +16,42 @@ class ChartSetting(val lineChart:LineChart, val dataSet:ArrayList<Entry>?) {
             initData(dataSet)
         }
     }
-    //init data
-    private fun initData(values:ArrayList<Entry>){
-        val dataset = LineDataSet(values, "Remain Gas")
-        dataset.mode = LineDataSet.Mode.CUBIC_BEZIER
-        dataset.color = Color.YELLOW //color of line
-        dataset.lineWidth = 3f// width of line
-        dataset.setDrawCircles(false)
-        dataset.setDrawValues(false)
-        val data = LineData(dataset)
-        this.lineChart.data = data
-        this.lineChart.invalidate()
-    }
     //update data
-    fun updateData(dataSet: ArrayList<Entry>){
+    fun updateData(dataSet: ArrayList<Entry>, xLabel: MutableList<String> = ArrayList()){
         setyAxis()
         setyAxis()
         initData(dataSet)
+        val xAxis = this.lineChart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(xLabel)
+    }
+    //init data
+    private fun initData(values:ArrayList<Entry>){
+        val dataset = LineDataSet(values, "Remain Gas")
+        dataset.mode = LineDataSet.Mode.LINEAR
+        dataset.color = Color.LTGRAY //color of line
+        dataset.lineWidth = 6f// width of line
+        dataset.setDrawCircles(true)
+        dataset.setDrawValues(true)
+        val data = LineData(dataset)
+        this.lineChart.data = data
+        this.lineChart.invalidate()
     }
     //set xAxis
     private fun setxAxis(){
         val xAxis = this.lineChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.textSize = 12f
+        xAxis.textSize = 10f
         xAxis.textColor = Color.BLACK
         xAxis.setLabelCount(6, true)
-        val xLable:MutableList<String> = ArrayList()
-        xLable.add("Jan")
-        xLable.add("Feb")
-        xLable.add("Mar")
-        xLable.add("Apr")
-        xLable.add("May")
-        xLable.add("June")
-        xAxis.valueFormatter = IndexAxisValueFormatter(xLable)
     }
     //set yAxis
-    private  fun  setyAxis(){
+    private fun setyAxis(){
         lineChart.axisRight.isEnabled = false
         val leftAxis = lineChart.axisLeft
-        leftAxis.textSize = 16f
+        leftAxis.textSize = 10f
         leftAxis.textColor = Color.BLACK
         leftAxis.axisMinimum = 0f
-        leftAxis.axisMaximum = 100f
+        leftAxis.axisMaximum = 2000f
         leftAxis.setLabelCount(6, true)
     }
     //initChart

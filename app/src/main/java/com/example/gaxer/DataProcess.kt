@@ -6,7 +6,7 @@ import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
 
-class HttpGet(){
+class DataProcess(){
     fun getData(url: String): String? {
         val client = OkHttpClient()
         val responseStr:String?
@@ -51,6 +51,7 @@ class HttpGet(){
                 gasName = keyName
                 break
             }
+
             val gas = JSONObject(tmp.getString(gasName))
             val dataBody = JSONObject(gas.getString("data"))
             val remaining = dataBody.getString("remaining")

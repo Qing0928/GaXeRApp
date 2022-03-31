@@ -3,4 +3,12 @@
     <string name="test" translatable="false">test</string>
     <string name="get" translatable="false">GET</string>
     <string name="nothing" translatable="false">Nothing</string>
+    <string name="gasbottle" translatable="false">gasbottle</string>
+    <string name="battery" translatable="false">battery</string>
+    <string name="temp" translatable="false">temp</string>
+    <string name="virus" translatable="false">virus</string>
+    <string name="nowBattery">%</string>
+    <string name="nowTemp">℃</string>
+    <string name="ppm">ppm</string>
+
 </resources>
