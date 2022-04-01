@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(){
         btnGet.setOnClickListener{
             Thread{
                 xAxisData.clear()
-                val url = "https://gaxer.ddns.net/data/?tok=123456abcd&record=6"
+                val url = "https://gaxer.ddns.net/data/?tok=123456abcd&record=4"
                 val response:String? = getData.getData(url)
                 val xLabel: MutableList<String> = getData.parseDataTime(response)
                 val remain: MutableList<String> = getData.parseDataRemaining(response)

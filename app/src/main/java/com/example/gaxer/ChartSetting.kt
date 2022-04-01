@@ -29,8 +29,8 @@ class ChartSetting(val lineChart:LineChart, val dataSet:ArrayList<Entry>?) {
         val dataset = LineDataSet(values, "Remain Gas")
         dataset.mode = LineDataSet.Mode.LINEAR
         dataset.color = Color.LTGRAY //color of line
-        dataset.lineWidth = 6f// width of line
-        dataset.setDrawCircles(true)
+        dataset.lineWidth = 3f// width of line
+        dataset.setDrawCircles(false)
         dataset.setDrawValues(true)
         val data = LineData(dataset)
         this.lineChart.data = data
@@ -42,7 +42,7 @@ class ChartSetting(val lineChart:LineChart, val dataSet:ArrayList<Entry>?) {
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.textSize = 10f
         xAxis.textColor = Color.BLACK
-        xAxis.setLabelCount(6, true)
+        xAxis.setLabelCount(4, true)
     }
     //set yAxis
     private fun setyAxis(){

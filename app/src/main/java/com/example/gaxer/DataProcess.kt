@@ -5,6 +5,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DataProcess(){
     fun getData(url: String): String? {
@@ -25,7 +27,8 @@ class DataProcess(){
         val responseJson = JSONArray(responseArray)
         var gasName = ""
         val gasTime = mutableListOf<String>()
-        for(i in 0 until responseJson.length()){
+
+        for(i in responseJson.length()-1 downTo 0){//倒著跑迴圈
             val tmp = JSONObject(responseJson.getString(i))
             for(keyName in tmp.keys()){
                 gasName = keyName
@@ -34,18 +37,19 @@ class DataProcess(){
             val gas = JSONObject(tmp.getString(gasName))
             val dataBody = JSONObject(gas.getString("data"))
             val time = dataBody.getString("time")
-            gasTime.add(time)
+            //timeStamp to dateTime
+            val simpleDateFormat = SimpleDateFormat("MM-dd HH:mm", Locale.TAIWAN)
+            gasTime.add(simpleDateFormat.format(Date(time.toLong()*1000)))
+
         }
-        for (i in gasTime){
-            Log.d("time", i)
-        }
+
         return gasTime
     }
     fun parseDataRemaining(responseArray:String?): MutableList<String>{
         val responseJson = JSONArray(responseArray)
         var gasName = ""
         val gasRemaining = mutableListOf<String>()
-        for(i in 0 until responseJson.length()){
+        for(i in responseJson.length()-1 downTo 0){
             val tmp = JSONObject(responseJson.getString(i))
             for(keyName in tmp.keys()){
                 gasName = keyName
@@ -58,9 +62,12 @@ class DataProcess(){
 
             gasRemaining.add(remaining)
         }
+        /*
         for (i in gasRemaining){
             Log.d("remaining", i)
         }
+
+         */
         return gasRemaining
     }
 }
