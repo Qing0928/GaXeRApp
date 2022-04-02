@@ -9,7 +9,7 @@ import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
-class ChartSetting(val lineChart:LineChart, val dataSet:ArrayList<Entry>?) {
+class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
     init {
         initChart()
         if (dataSet != null) {

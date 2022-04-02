@@ -8,19 +8,22 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DataProcess(){
+class DataProcess{
     fun getData(url: String): String? {
         val client = OkHttpClient()
         val responseStr:String?
         val request = Request.Builder().url(url).build()
         val response = client.newCall(request).execute()
         responseStr = response.body()?.string()
+        /*
         if (responseStr != null){
             Log.d("OKHttp", "Success")
         }
         else{
             Log.d("OKHttp", "Error")
         }
+
+         */
         return responseStr
     }
     fun parseDataTime(responseArray:String?): MutableList<String> {
@@ -42,7 +45,6 @@ class DataProcess(){
             gasTime.add(simpleDateFormat.format(Date(time.toLong()*1000)))
 
         }
-
         return gasTime
     }
     fun parseDataRemaining(responseArray:String?): MutableList<String>{
@@ -62,12 +64,6 @@ class DataProcess(){
 
             gasRemaining.add(remaining)
         }
-        /*
-        for (i in gasRemaining){
-            Log.d("remaining", i)
-        }
-
-         */
         return gasRemaining
     }
 }
