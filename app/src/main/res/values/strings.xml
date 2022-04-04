@@ -10,5 +10,8 @@
     <string name="nowBattery">%</string>
     <string name="nowTemp">℃</string>
     <string name="ppm">ppm</string>
+    <string name="intent_sw">Button</string>
+    <string name="starticon">StartICON</string>
+    <string name="StatusHint">資料載入中</string>
 
 </resources>

@@ -59,14 +59,19 @@ class MainActivity : AppCompatActivity(){
 
         }.start()
 
-        val xAxisData = ArrayList<Entry>()
+        //接收上一個activity傳遞過來的資料
+        val txAxisData: ArrayList<Entry> = intent.getParcelableArrayListExtra<Entry>("xAxisData") as ArrayList<Entry>
+        val txLabel: ArrayList<String> = intent.getStringArrayListExtra("xLabel") as ArrayList<String>
+
+        lineChart.updateData(txAxisData, txLabel)
         val btnGet = findViewById<Button>(R.id.btn_get)
         btnGet.setOnClickListener{
             Thread{
+                val xAxisData = ArrayList<Entry>()
                 xAxisData.clear()
                 val url = "https://gaxer.ddns.net/data/?tok=123456abcd&record=4"
                 val response:String? = getData.getData(url)
-                val xLabel: MutableList<String> = getData.parseDataTime(response)
+                val xLabel: ArrayList<String> = getData.parseDataTime(response)
                 val remain: MutableList<String> = getData.parseDataRemaining(response)
                 for ((xAxis, i) in remain.withIndex()){//(xAxis, i)>>(index, value)
                     xAxisData.add(Entry(xAxis.toFloat(), i.toFloat()))

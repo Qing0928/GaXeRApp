@@ -17,7 +17,7 @@ class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
         }
     }
     //update data
-    fun updateData(dataSet: ArrayList<Entry>, xLabel: MutableList<String> = ArrayList()){
+    fun updateData(dataSet: ArrayList<Entry>, xLabel: ArrayList<String> = ArrayList()){
         setyAxis()
         setyAxis()
         initData(dataSet)
@@ -51,7 +51,7 @@ class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
         leftAxis.textSize = 10f
         leftAxis.textColor = Color.BLACK
         leftAxis.axisMinimum = 0f
-        leftAxis.axisMaximum = 2000f
+        leftAxis.axisMaximum = 7000f
         leftAxis.setLabelCount(6, true)
     }
     //initChart
