@@ -8,29 +8,17 @@
     tools:ignore="MissingClass">
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/test"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.105"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
-
-    <Button
         android:id="@+id/btn_get"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/get"
+        android:text="@string/refresh"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.879"
+        app:layout_constraintHorizontal_bias="0.951"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.865" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
@@ -64,7 +52,7 @@
         android:layout_width="70dp"
         android:layout_height="32dp"
         android:text="@string/nowTemp"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +92,7 @@
         android:layout_width="70dp"
         android:layout_height="32dp"
         android:text="@string/nowBattery"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,14 +103,14 @@
 
     <TextView
         android:id="@+id/nowGas"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="32dp"
         android:text="@string/ppm"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.726"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.137" />
@@ -139,5 +127,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.047"
         app:srcCompat="@drawable/battery" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/gasSwitch"
+        android:layout_width="126dp"
+        android:layout_height="54dp"
+        android:text="@string/gasSwitch"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.953"
+        app:showText="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

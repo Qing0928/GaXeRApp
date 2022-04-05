@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">GaXeR</string>
     <string name="test" translatable="false">test</string>
-    <string name="get" translatable="false">GET</string>
     <string name="nothing" translatable="false">Nothing</string>
     <string name="gasbottle" translatable="false">gasbottle</string>
     <string name="battery" translatable="false">battery</string>
@@ -13,5 +12,7 @@
     <string name="intent_sw">Button</string>
     <string name="starticon">StartICON</string>
     <string name="StatusHint">資料載入中</string>
+    <string name="refresh">refresh</string>
+    <string name="gasSwitch">閥門</string>
 
 </resources>
