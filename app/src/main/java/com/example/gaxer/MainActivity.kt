@@ -3,9 +3,8 @@ package com.example.gaxer
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.github.mikephil.charting.data.Entry
@@ -25,15 +24,29 @@ class MainActivity : AppCompatActivity(){
         val nowTemp = findViewById<TextView>(R.id.nowTemp)
         val nowGas = findViewById<TextView>(R.id.nowGas)
         val nowBattery = findViewById<TextView>(R.id.nowBattery)
+        val nowDevStatus = findViewById<ImageView>(R.id.imageDevStatus)
         Thread{
-            val url = "https://gaxer.ddns.net/resident?tok=123456abcd"
-            val response:String? = getData.getData(url)
+            var url = "https://gaxer.ddns.net/resident?tok=123456abcd"
+            var response:String? = getData.getData(url)
             if (response != null){
                 val residentData = JSONObject(response)
                 runOnUiThread{
                     nowTemp.text = residentData.getString("temp") + "℃"
                     nowBattery.text = residentData.getString("battery") + "%"
                     nowGas.text = residentData.getString("gas") + "ppm"
+                }
+            }
+            //用圖標顯示裝置是否可用
+            url ="https://gaxer.ddns.net/safestatus?tok=123456abcd"
+            response = getData.getData(url)
+            if (response != null && response != "0000"){
+                runOnUiThread{
+                    nowDevStatus.setImageResource(R.drawable.redlight)
+                }
+            }
+            else{
+                runOnUiThread {
+                    nowDevStatus.setImageResource(R.drawable.greenlight)
                 }
             }
         }.start()
@@ -44,6 +57,23 @@ class MainActivity : AppCompatActivity(){
         lineChart.updateData(xAxisDataLastActivity, xLabelLastActivity)
 
         //更新圖表按鈕
+        val btnRefresh = findViewById<ImageButton>(R.id.imageButtonRefresh)
+        btnRefresh.setOnClickListener {
+            Thread{
+                val xAxisData = ArrayList<Entry>()
+                xAxisData.clear()
+                val url = "https://gaxer.ddns.net/data/?tok=123456abcd&record=4"
+                val response:String? = getData.getData(url)
+                val xLabel: ArrayList<String> = getData.parseDataTime(response)
+                val remain: MutableList<String> = getData.parseDataRemaining(response)
+                for ((xAxis, i) in remain.withIndex()){//(xAxis, i)>>(index, value)
+                    xAxisData.add(Entry(xAxis.toFloat(), i.toFloat()))
+                }
+                lineChart.updateData(xAxisData, xLabel)
+            }.start()
+            Toast.makeText(this, "資料更新中", Toast.LENGTH_SHORT).show()
+        }
+        /*
         val btnGet = findViewById<Button>(R.id.btn_get)
         btnGet.setOnClickListener{
             Thread{
@@ -61,19 +91,96 @@ class MainActivity : AppCompatActivity(){
             Toast.makeText(this, "資料更新中", Toast.LENGTH_SHORT).show()
         }
 
+         */
+
         //開關操作
         val gasSwitch = findViewById<SwitchCompat>(R.id.gasSwitch)
-        gasSwitch.isChecked = true
+        val errorDialog = AlertDialog.Builder(this)
+        //先確定閥門狀態，設定使用者要看到的開關狀態
+        Thread{
+            val url = "https://gaxer.ddns.net/swstatus?tok=123456abcd"
+            val response:String? = getData.getData(url)
+            if (response != null && response == "True"){
+                runOnUiThread {
+                    gasSwitch.isChecked = true
+                }
+            }
+            else{
+                runOnUiThread {
+                    gasSwitch.isChecked = false
+                }
+            }
+        }.start()
+
         gasSwitch.setOnCheckedChangeListener {_, isChecked ->
             if(isChecked){
                 Thread{
-                    val url = "https://gaxer.ddns.net/swupdate?tok=123456abcd&sw=True"
-                    val response:String? = getData.getData(url)
-                    if (response != null) {
-                        Log.d("Switch", response)
+                    var url = "https://gaxer.ddns.net/safestatus?tok=123456abcd"
+                    var response:String? = getData.getData(url)
+                    if (response != null && response == "0000") {
+                        url = "https://gaxer.ddns.net/swupdate?tok=123456abcd&sw=True"
+                        response = getData.getData((url))
+                        runOnUiThread {
+                            nowDevStatus.setImageResource(R.drawable.greenlight)
+                            Toast.makeText(this, "閥門已經開啟", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else{
+                        if (response != null){
+                            Log.d("status", response!!)
+                        }
+                        when(response){
+                            "0001" ->{
+                                errorDialog.setTitle("警告")
+                                errorDialog.setMessage("溫度異常")
+                                errorDialog.setCancelable(false)
+                                errorDialog.setPositiveButton("確定") {_,  _ ->
+                                    gasSwitch.isChecked = false
+                                }
+                                runOnUiThread {
+                                    errorDialog.show()
+                                }
+                            }
+                            "0010" ->{
+                                errorDialog.setTitle("警告")
+                                errorDialog.setMessage("瓦斯異常")
+                                errorDialog.setCancelable(false)
+                                errorDialog.setPositiveButton("確定") {_,  _ ->
+                                    gasSwitch.isChecked = false
+                                }
+                                runOnUiThread {
+                                    errorDialog.show()
+                                }
+                            }
+                            "0100" ->{
+                                errorDialog.setTitle("警告")
+                                errorDialog.setMessage("火焰異常")
+                                errorDialog.setCancelable(false)
+                                errorDialog.setPositiveButton("確定") {_,  _ ->
+                                    gasSwitch.isChecked = false
+                                }
+                                runOnUiThread {
+                                    errorDialog.show()
+                                }
+                            }
+                            "1000" ->{
+                                errorDialog.setTitle("警告")
+                                errorDialog.setMessage("電量")
+                                errorDialog.setCancelable(false)
+                                errorDialog.setPositiveButton("確定") {_,  _ ->
+                                    gasSwitch.isChecked = false
+                                }
+                                runOnUiThread {
+                                    errorDialog.show()
+                                }
+                            }
+                        }
+                        runOnUiThread {
+                            nowDevStatus.setImageResource(R.drawable.redlight)
+                            Toast.makeText(this, "請排除異常後再啟動裝置", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }.start()
-                Toast.makeText(this, "閥門已經開啟", Toast.LENGTH_SHORT).show()
             }
             else{
                 Thread{
@@ -83,7 +190,9 @@ class MainActivity : AppCompatActivity(){
                         Log.d("Switch", response)
                     }
                 }.start()
-                Toast.makeText(this, "閥門已經關閉", Toast.LENGTH_SHORT).show()
+                runOnUiThread {
+                    Toast.makeText(this, "閥門已經關閉", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

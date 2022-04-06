@@ -14,5 +14,6 @@
     <string name="StatusHint">資料載入中</string>
     <string name="refresh">refresh</string>
     <string name="gasSwitch">閥門</string>
+    <string name="devstatus">devStatus</string>
 
 </resources>
