@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.github.mikephil.charting.data.Entry
 import org.json.JSONObject
+import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity(){
     private lateinit var lineChart: ChartSetting
@@ -20,13 +21,19 @@ class MainActivity : AppCompatActivity(){
         lineChart = ChartSetting(findViewById(R.id.lineChart), null)
         val getData = DataProcess()
 
+        //接收上一個activity傳遞過來的資料
+        val token:String? = intent.getStringExtra("token")
+        val xAxisDataLastActivity: ArrayList<Entry> = intent.getParcelableArrayListExtra<Entry>("xAxisData") as ArrayList<Entry>
+        val xLabelLastActivity: ArrayList<String> = intent.getStringArrayListExtra("xLabel") as ArrayList<String>
+        lineChart.updateData(xAxisDataLastActivity, xLabelLastActivity)
+
         //頁面常駐資料載入
         val nowTemp = findViewById<TextView>(R.id.nowTemp)
         val nowGas = findViewById<TextView>(R.id.nowGas)
         val nowBattery = findViewById<TextView>(R.id.nowBattery)
         val nowDevStatus = findViewById<ImageView>(R.id.imageDevStatus)
         Thread{
-            var url = "https://gaxer.ddns.net/resident?tok=123456abcd"
+            var url = "resident?tok=${token}"
             var response:String? = getData.getData(url)
             if (response != null){
                 val residentData = JSONObject(response)
@@ -37,7 +44,7 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             //用圖標顯示裝置是否可用
-            url ="https://gaxer.ddns.net/safestatus?tok=123456abcd"
+            url ="safestatus?tok=${token}"
             response = getData.getData(url)
             if (response != null && response != "0000"){
                 runOnUiThread{
@@ -51,35 +58,13 @@ class MainActivity : AppCompatActivity(){
             }
         }.start()
 
-        //接收上一個activity傳遞過來的資料
-        val xAxisDataLastActivity: ArrayList<Entry> = intent.getParcelableArrayListExtra<Entry>("xAxisData") as ArrayList<Entry>
-        val xLabelLastActivity: ArrayList<String> = intent.getStringArrayListExtra("xLabel") as ArrayList<String>
-        lineChart.updateData(xAxisDataLastActivity, xLabelLastActivity)
-
         //更新圖表按鈕
         val btnRefresh = findViewById<ImageButton>(R.id.imageButtonRefresh)
         btnRefresh.setOnClickListener {
             Thread{
                 val xAxisData = ArrayList<Entry>()
                 xAxisData.clear()
-                val url = "https://gaxer.ddns.net/data/?tok=123456abcd&record=4"
-                val response:String? = getData.getData(url)
-                val xLabel: ArrayList<String> = getData.parseDataTime(response)
-                val remain: MutableList<String> = getData.parseDataRemaining(response)
-                for ((xAxis, i) in remain.withIndex()){//(xAxis, i)>>(index, value)
-                    xAxisData.add(Entry(xAxis.toFloat(), i.toFloat()))
-                }
-                lineChart.updateData(xAxisData, xLabel)
-            }.start()
-            Toast.makeText(this, "資料更新中", Toast.LENGTH_SHORT).show()
-        }
-        /*
-        val btnGet = findViewById<Button>(R.id.btn_get)
-        btnGet.setOnClickListener{
-            Thread{
-                val xAxisData = ArrayList<Entry>()
-                xAxisData.clear()
-                val url = "https://gaxer.ddns.net/data/?tok=123456abcd&record=4"
+                val url = "data/?tok=${token}&record=4"
                 val response:String? = getData.getData(url)
                 val xLabel: ArrayList<String> = getData.parseDataTime(response)
                 val remain: MutableList<String> = getData.parseDataRemaining(response)
@@ -91,14 +76,20 @@ class MainActivity : AppCompatActivity(){
             Toast.makeText(this, "資料更新中", Toast.LENGTH_SHORT).show()
         }
 
-         */
+        val testSHA = "test01"
+        val digest = MessageDigest.getInstance("SHA-256")
+        val result = digest.digest(testSHA.toByteArray()).fold("") { str, i ->
+            str + "%02x".format(i)
+
+        }
+        Log.d("sha256", result)
 
         //開關操作
         val gasSwitch = findViewById<SwitchCompat>(R.id.gasSwitch)
         val errorDialog = AlertDialog.Builder(this)
         //先確定閥門狀態，設定使用者要看到的開關狀態
         Thread{
-            val url = "https://gaxer.ddns.net/swstatus?tok=123456abcd"
+            val url = "swstatus?tok=${token}"
             val response:String? = getData.getData(url)
             if (response != null && response == "True"){
                 runOnUiThread {
@@ -115,10 +106,10 @@ class MainActivity : AppCompatActivity(){
         gasSwitch.setOnCheckedChangeListener {_, isChecked ->
             if(isChecked){
                 Thread{
-                    var url = "https://gaxer.ddns.net/safestatus?tok=123456abcd"
+                    var url = "safestatus?tok=${token}"
                     var response:String? = getData.getData(url)
                     if (response != null && response == "0000") {
-                        url = "https://gaxer.ddns.net/swupdate?tok=123456abcd&sw=True"
+                        url = "swupdate?tok=${token}&sw=True"
                         response = getData.getData((url))
                         runOnUiThread {
                             nowDevStatus.setImageResource(R.drawable.greenlight)
@@ -184,7 +175,7 @@ class MainActivity : AppCompatActivity(){
             }
             else{
                 Thread{
-                    val url = "https://gaxer.ddns.net/swupdate?tok=123456abcd&sw=False"
+                    val url = "swupdate?tok=${token}&sw=False"
                     val response:String? = getData.getData(url)
                     if (response != null) {
                         Log.d("Switch", response)

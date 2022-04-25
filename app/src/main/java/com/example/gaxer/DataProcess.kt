@@ -1,6 +1,7 @@
 package com.example.gaxer
 
 import android.util.Log
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
@@ -8,13 +9,15 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.reflect.typeOf
 
 class DataProcess{
-    fun getData(url: String): String? {
+    companion object{
+        const val serverURL = "https://gaxer.ddns.net/"
+    }
+    fun getData(api: String): String? {
         val client = OkHttpClient()
         val responseStr:String?
-        val request = Request.Builder().url(url).build()
+        val request = Request.Builder().url(serverURL+api).build()
         val response = client.newCall(request).execute()
         responseStr = response.body()?.string()
         /*
@@ -28,8 +31,17 @@ class DataProcess{
          */
         return responseStr
     }
+    fun postData(api: String, postBody: FormBody):String?{
+        val client = OkHttpClient()
+        val responseStr: String?
+        val request = Request.Builder().url(serverURL+api).post(postBody).build()
+        val response = client.newCall(request).execute()
+        responseStr = response.body()?.string()
+        return responseStr
+    }
 
     fun parseDataTime(responseArray:String?): ArrayList<String> {
+        Log.d("response", responseArray.toString())
         val responseJson = JSONArray(responseArray)
         var gasName = ""
         val gasTime = ArrayList<String>()
