@@ -15,8 +15,7 @@ class StartActivity : AppCompatActivity() {
         val getData = DataProcess()
         val xAxisData = ArrayList<Entry>()
         val pref = getSharedPreferences("info", 0)
-        val editor = pref.edit()
-        //editor.clear().apply()
+        //讀取看是否有使用者資料
         val token:String? = pref.getString("token", null)
         Log.d("token", token.toString())
         val intent = Intent("android.intent.action.MAIN")
@@ -38,18 +37,6 @@ class StartActivity : AppCompatActivity() {
                 intent.putExtra("xLabel", xLabel)
                 intent.putExtra("token", token)
                 startActivity(intent)
-                //對SharedPreferences寫入資料
-                /*
-                editor.putString("account", "test01").apply()
-                editor.putString("token", "937E8D5FBB48BD4949536CD65B8D35C426B80D2F830C5C308E2CDEC422AE2244").apply()
-                val test:String? = pref.getString("token", "")
-                if (test != null) {
-                    Log.d("pref", test)
-                }
-                else{
-                    Log.d("pref", "false")
-                }
-                 */
             }.start()
         }
         else{

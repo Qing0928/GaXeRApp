@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
                     if (response != null) {
                         Log.d("response", response)
                     }
+                    //對SharedPreferences寫入資料
                     editor.putString("account", account.text.toString()).apply()
                     editor.putString("token", response).apply()
                     val test:String? = pref.getString("token", "")

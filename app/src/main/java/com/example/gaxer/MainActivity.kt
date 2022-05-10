@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.github.mikephil.charting.data.Entry
 import org.json.JSONObject
-import java.security.MessageDigest
+
 
 class MainActivity : AppCompatActivity(){
     private lateinit var lineChart: ChartSetting
@@ -75,14 +75,6 @@ class MainActivity : AppCompatActivity(){
             }.start()
             Toast.makeText(this, "資料更新中", Toast.LENGTH_SHORT).show()
         }
-
-        val testSHA = "test01"
-        val digest = MessageDigest.getInstance("SHA-256")
-        val result = digest.digest(testSHA.toByteArray()).fold("") { str, i ->
-            str + "%02x".format(i)
-
-        }
-        Log.d("sha256", result)
 
         //開關操作
         val gasSwitch = findViewById<SwitchCompat>(R.id.gasSwitch)
