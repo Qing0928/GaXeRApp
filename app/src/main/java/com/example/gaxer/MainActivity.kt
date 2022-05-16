@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(){
 
         //接收上一個activity傳遞過來的資料
         val token:String? = intent.getStringExtra("token")
+        val devName:String? = intent.getStringExtra("devName")
         val xAxisDataLastActivity: ArrayList<Entry> = intent.getParcelableArrayListExtra<Entry>("xAxisData") as ArrayList<Entry>
         val xLabelLastActivity: ArrayList<String> = intent.getStringArrayListExtra("xLabel") as ArrayList<String>
         lineChart.updateData(xAxisDataLastActivity, xLabelLastActivity)
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(){
         val nowBattery = findViewById<TextView>(R.id.nowBattery)
         val nowDevStatus = findViewById<ImageView>(R.id.imageDevStatus)
         Thread{
-            var url = "resident?tok=${token}"
+            var url = "resident?tok=${token}&dev=${devName}"
             var response:String? = getData.getData(url)
             if (response != null){
                 val residentData = JSONObject(response)
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             //用圖標顯示裝置是否可用
-            url ="safestatus?tok=${token}"
+            url ="safestatus?tok=${token}&dev=${devName}"
             response = getData.getData(url)
             if (response != null && response != "0000"){
                 runOnUiThread{
@@ -63,11 +64,15 @@ class MainActivity : AppCompatActivity(){
         btnRefresh.setOnClickListener {
             Thread{
                 val xAxisData = ArrayList<Entry>()
+                var xLabel = ArrayList<String>()
+                var remain = listOf<String>() as MutableList<String>
                 xAxisData.clear()
-                val url = "data/?tok=${token}&record=4"
+                val url = "data/?tok=${token}&record=4&dev=${devName}"
                 val response:String? = getData.getData(url)
-                val xLabel: ArrayList<String> = getData.parseDataTime(response)
-                val remain: MutableList<String> = getData.parseDataRemaining(response)
+                if(devName != null){
+                    xLabel = getData.parseDataTime(response, devName)
+                    remain = getData.parseDataRemaining(response, devName)
+                }
                 for ((xAxis, i) in remain.withIndex()){//(xAxis, i)>>(index, value)
                     xAxisData.add(Entry(xAxis.toFloat(), i.toFloat()))
                 }
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity(){
         val errorDialog = AlertDialog.Builder(this)
         //先確定閥門狀態，設定使用者要看到的開關狀態
         Thread{
-            val url = "swstatus?tok=${token}"
+            val url = "swstatus?tok=${token}&dev=${devName}"
             val response:String? = getData.getData(url)
             if (response != null && response == "True"){
                 runOnUiThread {
@@ -98,11 +103,11 @@ class MainActivity : AppCompatActivity(){
         gasSwitch.setOnCheckedChangeListener {_, isChecked ->
             if(isChecked){
                 Thread{
-                    var url = "safestatus?tok=${token}"
-                    var response:String? = getData.getData(url)
+                    var url = "safestatus?tok=${token}&dev=${devName}"
+                    val response:String? = getData.getData(url)
                     if (response != null && response == "0000") {
-                        url = "swupdate?tok=${token}&sw=True"
-                        response = getData.getData((url))
+                        url = "swupdate?tok=${token}&sw=True&dev=${devName}"
+                        getData.getData((url))//更改開關狀態
                         runOnUiThread {
                             nowDevStatus.setImageResource(R.drawable.greenlight)
                             Toast.makeText(this, "閥門已經開啟", Toast.LENGTH_SHORT).show()
@@ -110,7 +115,7 @@ class MainActivity : AppCompatActivity(){
                     }
                     else{
                         if (response != null){
-                            Log.d("status", response!!)
+                            Log.d("status", response)
                         }
                         when(response){
                             "0001" ->{
@@ -167,7 +172,7 @@ class MainActivity : AppCompatActivity(){
             }
             else{
                 Thread{
-                    val url = "swupdate?tok=${token}&sw=False"
+                    val url = "swupdate?tok=${token}&sw=False&dev=${devName}"
                     val response:String? = getData.getData(url)
                     if (response != null) {
                         Log.d("Switch", response)

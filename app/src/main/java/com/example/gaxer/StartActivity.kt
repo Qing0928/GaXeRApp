@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.github.mikephil.charting.data.Entry
+//import com.github.mikephil.charting.data.Entry
 import android.util.Log
 
 class StartActivity : AppCompatActivity() {
@@ -12,15 +12,20 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
-        val getData = DataProcess()
-        val xAxisData = ArrayList<Entry>()
+
+        //val getData = DataProcess()
+        //val xAxisData = ArrayList<Entry>()
         val pref = getSharedPreferences("info", 0)
         //讀取看是否有使用者資料
         val token:String? = pref.getString("token", null)
-        Log.d("token", token.toString())
+        Log.d("start", token.toString())
         val intent = Intent("android.intent.action.MAIN")
 
         if (token != null){
+            intent.addCategory("android.intent.category.ALL")
+            intent.putExtra("token", token)
+            startActivity(intent)
+            /*
             Thread{
                 xAxisData.clear()
                 val url = "data?tok=${token}&record=4"
@@ -38,6 +43,8 @@ class StartActivity : AppCompatActivity() {
                 intent.putExtra("token", token)
                 startActivity(intent)
             }.start()
+
+             */
         }
         else{
             intent.addCategory("android.intent.category.LOGIN")

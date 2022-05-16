@@ -20,15 +20,7 @@ class DataProcess{
         val request = Request.Builder().url(serverURL+api).build()
         val response = client.newCall(request).execute()
         responseStr = response.body()?.string()
-        /*
-        if (responseStr != null){
-            Log.d("OKHttp", "Success")
-        }
-        else{
-            Log.d("OKHttp", "Error")
-        }
 
-         */
         return responseStr
     }
     fun postData(api: String, postBody: FormBody):String?{
@@ -40,18 +32,13 @@ class DataProcess{
         return responseStr
     }
 
-    fun parseDataTime(responseArray:String?): ArrayList<String> {
+    fun parseDataTime(responseArray:String?, devName:String): ArrayList<String> {
         Log.d("response", responseArray.toString())
         val responseJson = JSONArray(responseArray)
-        var gasName = ""
         val gasTime = ArrayList<String>()
         for(i in responseJson.length()-1 downTo 0){//倒著跑迴圈
             val tmp = JSONObject(responseJson.getString(i))
-            for(keyName in tmp.keys()){
-                gasName = keyName
-                break
-            }
-            val gas = JSONObject(tmp.getString(gasName))
+            val gas = JSONObject(tmp.getString(devName))
             val dataBody = JSONObject(gas.getString("data"))
             val time = dataBody.getString("time")
             //timeStamp to dateTime
@@ -62,17 +49,12 @@ class DataProcess{
         return gasTime
     }
 
-    fun parseDataRemaining(responseArray:String?): ArrayList<String>{
+    fun parseDataRemaining(responseArray:String?, devName:String): ArrayList<String>{
         val responseJson = JSONArray(responseArray)
-        var gasName = ""
         val gasRemaining = ArrayList<String>()
         for(i in responseJson.length()-1 downTo 0){
             val tmp = JSONObject(responseJson.getString(i))
-            for(keyName in tmp.keys()){
-                gasName = keyName
-                break
-            }
-            val gas = JSONObject(tmp.getString(gasName))
+            val gas = JSONObject(tmp.getString(devName))
             val dataBody = JSONObject(gas.getString("data"))
             val remaining = dataBody.getString("remaining")
 

@@ -33,4 +33,6 @@
     <string name="fragment_home">HomeFragment</string>
     <string name="fragment_setting">SettingFragment</string>
     <string name="fragment_add_dev">AddDevFragment</string>
+    <string name="card_app_name">card test</string>
+    <string name="all_dev">所有裝置</string>
 </resources>
