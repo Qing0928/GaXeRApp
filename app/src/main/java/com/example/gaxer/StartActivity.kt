@@ -18,33 +18,12 @@ class StartActivity : AppCompatActivity() {
         val pref = getSharedPreferences("info", 0)
         //讀取看是否有使用者資料
         val token:String? = pref.getString("token", null)
-        Log.d("start", token.toString())
         val intent = Intent("android.intent.action.MAIN")
 
         if (token != null){
             intent.addCategory("android.intent.category.ALL")
             intent.putExtra("token", token)
             startActivity(intent)
-            /*
-            Thread{
-                xAxisData.clear()
-                val url = "data?tok=${token}&record=4"
-                Log.d("url", url)
-                val response:String? = getData.getData(url)
-                val xLabel: ArrayList<String> = getData.parseDataTime(response)
-                val remain: ArrayList<String> = getData.parseDataRemaining(response)
-                for ((xAxis, i) in remain.withIndex()){//(xAxis, i)>>(index, value)
-                    xAxisData.add(Entry(xAxis.toFloat(), i.toFloat()))
-                }
-                //使用intent傳遞資料
-                intent.addCategory("android.intent.category.MAINACTIVITY")
-                intent.putExtra("xAxisData", xAxisData)
-                intent.putExtra("xLabel", xLabel)
-                intent.putExtra("token", token)
-                startActivity(intent)
-            }.start()
-
-             */
         }
         else{
             intent.addCategory("android.intent.category.LOGIN")

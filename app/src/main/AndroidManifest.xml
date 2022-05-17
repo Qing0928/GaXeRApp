@@ -4,6 +4,7 @@
     package="com.example.gaxer">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -12,18 +13,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GaXeR">
+        <service
+            android:name=".AlertService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="TODO" />
 
         <activity
             android:name=".HomeActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.ALL"/>
+                <category android:name="android.intent.category.ALL" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -34,7 +39,6 @@
                 <category android:name="android.intent.category.LOGIN" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".StartActivity"
             android:exported="true">

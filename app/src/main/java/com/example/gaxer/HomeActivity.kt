@@ -2,6 +2,7 @@ package com.example.gaxer
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -12,34 +13,37 @@ import org.json.JSONObject
 
 
 class HomeActivity : AppCompatActivity() {
-    @SuppressLint("SetTextI18n", "ResourceType")
+    @SuppressLint("SetTextI18n", "ResourceType", "CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        val getData = DataProcess()
         val token:String? = intent.getStringExtra("token")
+        val pref = getSharedPreferences("info", 0)
+        val editor = pref.edit()
+        val alertBack = Intent(this, AlertService()::class.java)
+        //var alertList:JSONArray
 
         val intent = Intent("android.intent.action.MAIN")
         intent.addCategory("android.intent.category.MAINACTIVITY")
 
-        Log.d("home", token.toString())
-
         BottomNavigation(findViewById(R.id.navigationbottomView))
-        val getData = DataProcess()
 
         //loadFragment(HomeFragment())
         val horizontalScroll = findViewById<LinearLayout>(R.id.HorizontalLinear)
         var devList:JSONArray
+        stopService(alertBack)
+
         Thread{
             var response:String? = getData.getData("devlist?tok=${token}")
-            Log.d("maybe", "ok")
-            Log.d("response", response.toString())
             if (response!=null){
                 val devListObj = JSONObject(response).getString("devList")
                 devList = JSONArray(devListObj)
-
                 //val devList = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8)
                 //var leftPosition = 0
                 for(i in 0 until devList.length()){
+                    //取得裝置清單，自動在畫面上新增按鈕
                     runOnUiThread{
                         val devButton = ImageButton(this)
                         devButton.setImageResource(R.drawable.gasbottle)
@@ -71,27 +75,50 @@ class HomeActivity : AppCompatActivity() {
                         }
                         horizontalScroll.addView(devButton)
                         //leftPosition += 50
-                        Log.d("devList", devList[i].toString())
                     }
-
+                    if(pref.getString(devList[i].toString(), null) == null){
+                        editor.putString(devList[i].toString(), "0").apply()
+                    }
+                    else{
+                        editor.putString(devList[i].toString(), "0").apply()
+                    }
                 }
-
+            }
+            if (token != null){
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    startForegroundService(alertBack)
+                }
+            }
+            else{
+                Log.d("Service", "Fail to Start Service")
             }
         }.start()
         /*
-        val testButton = ImageButton(this)
-        testButton.setImageResource(R.drawable.battery)
-        testButton.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 200)
-        val layoutParams = testButton.layoutParams as FrameLayout.LayoutParams
-        //layoutParams.setMargins(0, 100, 0, 0)
-        //layoutParams.width = 300
-        layoutParams.topMargin = 500
-        layoutParams.height = 400
-        testButton.layoutParams = layoutParams
-        testButton.id = 123
-        testButton.tag = "123"
-        Log.d("idTest", testButton.id.toString())
-        container.addView(testButton)
+        Thread{
+            val response:String? = getData.getData("devlist?tok=${token}")
+            if(response != null){
+                val alertListObj = JSONObject(response).getString("devList")
+                alertList = JSONArray(alertListObj)
+                for (i in 0 until alertList.length()){
+                    if(pref.getString(alertList[i].toString(), null) == null){
+                        editor.putString(alertList[i].toString(), "0").apply()
+                    }
+                    else{
+                        editor.putString(alertList[i].toString(), "0").apply()
+                    }
+                }
+            }
+            //啟動Service
+            if (token != null){
+                val alertBack = Intent(this, AlertService()::class.java)
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    startForegroundService(alertBack)
+                }
+            }
+            else{
+                Log.d("Service", "Fail to Start Service")
+            }
+        }.start()
 
          */
     }
