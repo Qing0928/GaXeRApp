@@ -37,4 +37,6 @@
     <string name="all_dev">所有裝置</string>
     <string name="new_group">新增群組</string>
     <string name="free_dev">可用的裝置</string>
+    <string name="btn_group">確定新增</string>
+    <string name="name_group">群組名稱</string>
 </resources>

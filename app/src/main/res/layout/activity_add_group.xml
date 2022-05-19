@@ -26,7 +26,7 @@
     <ScrollView
         android:id="@+id/freeDevScrollView"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="500dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="100dp"
         android:contentDescription="@string/free_dev"
@@ -39,6 +39,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_group"
+        android:layout_marginTop="700dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_group" />
+
+    <EditText
+        android:id="@+id/editTextGroupname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="640dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/name_group"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575" />
 
 
 </FrameLayout>

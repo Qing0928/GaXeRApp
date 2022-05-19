@@ -57,7 +57,7 @@ class AlertService: Service() {
                 Thread{
                     val response:String? = getData.getData("alert?tok=${token}")
                     //取得出問題的裝置清單
-                    Log.d("service", response.toString())
+                    //Log.d("service", response.toString())
                     val alertDevList = response?.let { JSONObject(it).getString("alert") }
                     //轉換成jsonArray
                     val alertDev = JSONArray(alertDevList)
