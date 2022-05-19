@@ -35,4 +35,6 @@
     <string name="fragment_add_dev">AddDevFragment</string>
     <string name="card_app_name">card test</string>
     <string name="all_dev">所有裝置</string>
+    <string name="new_group">新增群組</string>
+    <string name="free_dev">可用的裝置</string>
 </resources>

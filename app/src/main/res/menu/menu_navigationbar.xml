@@ -9,7 +9,7 @@
         android:id="@+id/addDev"
         android:icon="@drawable/plus"/>
     <item
-        android:title="@string/setting"
+        android:title="@string/new_group"
         android:id="@+id/setting"
         android:icon="@drawable/settings"/>
 </menu>

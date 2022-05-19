@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.data.Entry
 import org.json.JSONArray
 import org.json.JSONObject
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeActivity : AppCompatActivity() {
@@ -25,12 +26,33 @@ class HomeActivity : AppCompatActivity() {
         val alertBack = Intent(this, AlertService()::class.java)
         //var alertList:JSONArray
 
-        val intent = Intent("android.intent.action.MAIN")
-        intent.addCategory("android.intent.category.MAINACTIVITY")
-
-        BottomNavigation(findViewById(R.id.navigationbottomView))
-
+        //BottomNavigation(findViewById(R.id.navigationbottomView))
+        val bottomNav = findViewById<BottomNavigationView>(R.id.navigationbottomView)
+        bottomNav.setOnItemSelectedListener {
+            val intent = Intent("android.intent.action.MAIN")
+            when(it.itemId){
+                R.id.home ->{
+                    //intent.removeCategory("android.intent.category.ADDGROUP")
+                    intent.addCategory("android.intent.category.ALL")
+                    intent.putExtra("token", token)
+                    startActivity(intent)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.addDev ->{
+                    //intent.removeCategory("android.intent.category.ALL")
+                    intent.addCategory("android.intent.category.ADDGROUP")
+                    intent.putExtra("token", token)
+                    startActivity(intent)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.setting->{
+                    return@setOnItemSelectedListener true
+                }
+                else -> return@setOnItemSelectedListener false
+            }
+        }
         //loadFragment(HomeFragment())
+
         val horizontalScroll = findViewById<LinearLayout>(R.id.HorizontalLinear)
         var devList:JSONArray
         stopService(alertBack)
@@ -65,6 +87,7 @@ class HomeActivity : AppCompatActivity() {
                                 for ((xAxis, j) in remain.withIndex()){//(xAxis, j)>>(index, value)
                                     xAxisData.add(Entry(xAxis.toFloat(), j.toFloat()))
                                 }
+                                intent.addCategory("android.intent.category.MAINACTIVITY")
                                 //使用intent傳遞資料
                                 intent.putExtra("xAxisData", xAxisData)
                                 intent.putExtra("xLabel", xLabel)

@@ -50,19 +50,18 @@ class AlertService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timer().schedule(object :TimerTask(){
-            var count = 0
             @RequiresApi(Build.VERSION_CODES.O)
             override fun run() {
                 val pref = getSharedPreferences("info", 0)
                 val editor = pref.edit()
                 Thread{
-                    val response = getData.getData("alert?tok=${token}")
+                    val response:String? = getData.getData("alert?tok=${token}")
                     //取得出問題的裝置清單
-                    val alertDevList = JSONObject(response).getString("alert")
+                    Log.d("service", response.toString())
+                    val alertDevList = response?.let { JSONObject(it).getString("alert") }
                     //轉換成jsonArray
                     val alertDev = JSONArray(alertDevList)
                     for (i in 0 until alertDev.length()){
-                        Log.d("detail", alertDev[i].toString())
                         val tmp = alertDev[i].toString()
                             .replace("}", "")
                             .replace("{", "")
@@ -71,18 +70,31 @@ class AlertService: Service() {
                         val devName = tmp[0]
                         val warningCode = tmp[1]
                         if (warningCode != "0000" && pref.getString(devName, null) == "0"){
-                            createNotification("${devName}發生問題",warningCode, "03", devName+"發生問題")
+                            when(warningCode){
+                                "0001" ->{
+                                    createNotification("裝置:${devName} 發生問題","溫度異常", "0001", devName+"溫度異常")
+                                }
+                                "0010" ->{
+                                    createNotification("裝置:${devName} 發生問題","瓦斯異常", "0010", devName+"瓦斯異常")
+                                }
+                                "0100" ->{
+                                    createNotification("裝置:${devName} 發生問題","火焰異常", "0100", devName+"火焰異常")
+                                }
+                                "1000" ->{
+                                    createNotification("裝置:${devName} 發生問題","電量不足", "1000", devName+"電量不足")
+                                }
+                                "0011" ->{
+                                    createNotification("裝置:${devName} 發生問題","異常搖晃", "0011", devName+"異常搖晃")
+                                }
+                            }
                             editor.putString(devName, "1").apply()
                             if(i == alertDev.length()-1){
                                 Timer().cancel()
                                 break
                             }
-                            Log.d("tmp", tmp.toString())
                         }
                     }
                 }.start()
-                count += 1
-                Log.d("Timer", count.toString())
             }
         },0, 1000)
         return START_REDELIVER_INTENT

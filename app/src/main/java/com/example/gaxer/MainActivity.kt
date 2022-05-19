@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(){
             Thread{
                 val xAxisData = ArrayList<Entry>()
                 var xLabel = ArrayList<String>()
-                var remain = listOf<String>() as MutableList<String>
+                var remain = ArrayList<String>()
                 xAxisData.clear()
                 val url = "data/?tok=${token}&record=4&dev=${devName}"
                 val response:String? = getData.getData(url)
@@ -153,7 +153,18 @@ class MainActivity : AppCompatActivity(){
                             }
                             "1000" ->{
                                 errorDialog.setTitle("警告")
-                                errorDialog.setMessage("電量")
+                                errorDialog.setMessage("電量不足")
+                                errorDialog.setCancelable(false)
+                                errorDialog.setPositiveButton("確定") {_,  _ ->
+                                    gasSwitch.isChecked = false
+                                }
+                                runOnUiThread {
+                                    errorDialog.show()
+                                }
+                            }
+                            "0011" ->{
+                                errorDialog.setTitle("警告")
+                                errorDialog.setMessage("異常搖晃")
                                 errorDialog.setCancelable(false)
                                 errorDialog.setPositiveButton("確定") {_,  _ ->
                                     gasSwitch.isChecked = false
