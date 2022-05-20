@@ -1,5 +1,6 @@
 package com.example.gaxer
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,11 +16,14 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class AddGroupActivity : AppCompatActivity() {
+    @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_group)
 
-        val token:String? = intent.getStringExtra("token")
+        //val token:String? = intent.getStringExtra("token")
+        val pref = getSharedPreferences("info", 0)
+        val token:String? = pref.getString("token", null)
         val getData = DataProcess()
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.navigationbottomView)
@@ -27,20 +31,19 @@ class AddGroupActivity : AppCompatActivity() {
             val intent = Intent("android.intent.action.MAIN")
             when(it.itemId){
                 R.id.home ->{
-                    //intent.removeCategory("android.intent.category.ADDGROUP")
                     intent.addCategory("android.intent.category.ALL")
                     intent.putExtra("token", token)
                     startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
                 R.id.addDev ->{
-                    //intent.removeCategory("android.intent.category.ALL")
-                    intent.addCategory("android.intent.category.ADDGROUP")
-                    intent.putExtra("token", token)
-                    startActivity(intent)
+
                     return@setOnItemSelectedListener true
                 }
                 R.id.setting->{
+                    intent.addCategory("android.intent.category.ADDGROUP")
+                    intent.putExtra("token", token)
+                    startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
                 else -> return@setOnItemSelectedListener false
@@ -91,35 +94,40 @@ class AddGroupActivity : AppCompatActivity() {
         val btnRegister = findViewById<Button>(R.id.btn_group)
         btnRegister.setOnClickListener {
             val groupName = findViewById<EditText>(R.id.editTextGroupname)
+
             if (groupName.text.toString() == ""){
                 Log.d("groupName", "fail")
             }
+
             if (devCheckBoxCheck.isNotEmpty()){
+                Log.d("Check", devCheckBoxCheck.toString())
                 Thread{
                     var dev = "["
                     for(i in devCheckBoxCheck){
-                        val pref = getSharedPreferences("dev", 0)
-                        if (pref.getString(i, null) != null){
-                            dev += "{\"${i}\":\"${pref.getString(i, null)}\"},"
+                        //取得裝置的MAC以供儲存在資料庫
+                        val prefDev = getSharedPreferences("dev", 0)
+                        if (prefDev.getString(i, null) != null){
+                            dev += "{\"${i}\":\"${prefDev.getString(i, null)}\"},"
                         }
                     }
                     dev += "]"
+                    //製作Post表單
                     val dataBody = FormBody.Builder()
                         .add("token", token)
                         .add("name", groupName.text.toString())
                         .add("dev", dev)
                         .build()
-                    val response:String? = getData.postData("groupregister", dataBody)
-                    if(response != null){
-                        Log.d("groupRegister", response)
-                    }
+                    //註冊群組
+                    getData.postData("groupregister", dataBody)
+                    val prefGroup = getSharedPreferences("group"+groupName.text.toString(), 0)
+                    val editGroup = prefGroup.edit()
+                    editGroup.putString("group", devCheckBoxCheck.toString()).apply()
                 }.start()
                 Log.d("groupName", groupName.text.toString())
             }
             else{
                 Log.d("groupRegister", "nothing be selected")
             }
-            Log.d("Check", devCheckBoxCheck.toString())
         }
     }
 }

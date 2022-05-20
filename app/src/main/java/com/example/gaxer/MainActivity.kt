@@ -20,13 +20,16 @@ class MainActivity : AppCompatActivity(){
 
         lineChart = ChartSetting(findViewById(R.id.lineChart), null)
         val getData = DataProcess()
-
+        val pref = getSharedPreferences("info", 0)
+        val token:String? = pref.getString("token", null)
         //接收上一個activity傳遞過來的資料
-        val token:String? = intent.getStringExtra("token")
+        //val token:String? = intent.getStringExtra("token")
         val devName:String? = intent.getStringExtra("devName")
+        Log.d("mainActDevName", devName.toString())
         val xAxisDataLastActivity: ArrayList<Entry> = intent.getParcelableArrayListExtra<Entry>("xAxisData") as ArrayList<Entry>
         val xLabelLastActivity: ArrayList<String> = intent.getStringArrayListExtra("xLabel") as ArrayList<String>
         lineChart.updateData(xAxisDataLastActivity, xLabelLastActivity)
+
 
         //頁面常駐資料載入
         val nowTemp = findViewById<TextView>(R.id.nowTemp)
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity(){
         Thread{
             var url = "resident?tok=${token}&dev=${devName}"
             var response:String? = getData.getData(url)
+            Log.d("mainAct", response.toString())
             if (response != null){
                 val residentData = JSONObject(response)
                 runOnUiThread{

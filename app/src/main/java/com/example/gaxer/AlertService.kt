@@ -59,6 +59,7 @@ class AlertService: Service() {
                     //取得出問題的裝置清單
                     //Log.d("service", response.toString())
                     val alertDevList = response?.let { JSONObject(it).getString("alert") }
+                    //Log.d("alert", response.toString())
                     //轉換成jsonArray
                     val alertDev = JSONArray(alertDevList)
                     for (i in 0 until alertDev.length()){

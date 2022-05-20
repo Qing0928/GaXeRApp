@@ -15,6 +15,13 @@ class StartActivity : AppCompatActivity() {
         //val getData = DataProcess()
         //val xAxisData = ArrayList<Entry>()
         val pref = getSharedPreferences("info", 0)
+        /*
+        val devPref = getSharedPreferences("dev", 0)
+        val devEditor = devPref.edit()
+        devEditor.putString("gas1", "24:0A:C4:59:A5:44").apply()
+        devEditor.putString("gas2", "34:94:54:24:85:0C").apply()
+
+         */
         //讀取看是否有使用者資料
         val token:String? = pref.getString("token", null)
         val intent = Intent("android.intent.action.MAIN")
@@ -22,6 +29,7 @@ class StartActivity : AppCompatActivity() {
         if (token != null){
             intent.addCategory("android.intent.category.ALL")
             intent.putExtra("token", token)
+
             startActivity(intent)
         }
         else{
