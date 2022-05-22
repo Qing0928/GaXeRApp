@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.FormBody
 import org.json.JSONArray
@@ -91,15 +92,26 @@ class AddGroupActivity : AppCompatActivity() {
                 }.start()
             }
         }.start()
+
+        //確定註冊
         val btnRegister = findViewById<Button>(R.id.btn_group)
         btnRegister.setOnClickListener {
             val groupName = findViewById<EditText>(R.id.editTextGroupname)
 
             if (groupName.text.toString() == ""){
-                Log.d("groupName", "fail")
+                val errorDialog = AlertDialog.Builder(this)
+                errorDialog.setTitle("錯誤")
+                errorDialog.setMessage("群組名稱未輸入")
+                errorDialog.setCancelable(false)
+                errorDialog.setPositiveButton("確定"){_, _ ->
+
+                }
+                runOnUiThread {
+                    errorDialog.show()
+                }
             }
 
-            if (devCheckBoxCheck.isNotEmpty()){
+            if (devCheckBoxCheck.isNotEmpty() && groupName.text.toString() != ""){
                 Log.d("Check", devCheckBoxCheck.toString())
                 Thread{
                     var dev = "["
@@ -112,21 +124,34 @@ class AddGroupActivity : AppCompatActivity() {
                     }
                     dev += "]"
                     //製作Post表單
-                    val dataBody = FormBody.Builder()
-                        .add("token", token)
-                        .add("name", groupName.text.toString())
-                        .add("dev", dev)
-                        .build()
-                    //註冊群組
-                    getData.postData("groupregister", dataBody)
+                    val dataBody:FormBody
+                    if(token != null){
+                        dataBody = FormBody.Builder()
+                            .add("token", token)
+                            .add("name", groupName.text.toString())
+                            .add("dev", dev)
+                            .build()
+                        //發出註冊請求
+                        getData.postData("groupregister", dataBody)
+                    }
+
                     val prefGroup = getSharedPreferences("group"+groupName.text.toString(), 0)
                     val editGroup = prefGroup.edit()
                     editGroup.putString("group", devCheckBoxCheck.toString()).apply()
                 }.start()
-                Log.d("groupName", groupName.text.toString())
             }
-            else{
-                Log.d("groupRegister", "nothing be selected")
+
+            if (devCheckBoxCheck.isEmpty()){
+                val errorDialog = AlertDialog.Builder(this)
+                errorDialog.setTitle("錯誤")
+                errorDialog.setMessage("請至少選擇一個裝置")
+                errorDialog.setCancelable(false)
+                errorDialog.setPositiveButton("確定"){_, _ ->
+
+                }
+                runOnUiThread {
+                    errorDialog.show()
+                }
             }
         }
     }

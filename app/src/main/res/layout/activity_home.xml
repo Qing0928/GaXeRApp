@@ -12,9 +12,22 @@
         android:id="@+id/allText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="100dp"
         android:layout_marginStart="55dp"
         android:text="@string/all_dev" />
+
+    <!--app:icon="@drawable/home"
+
+        app:iconSize="50dp" -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/material"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/test"
+        app:backgroundTint="#1E88E5"
+        app:iconGravity="textTop" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationbottomView"
@@ -29,7 +42,7 @@
         android:layout_width="300dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/horizontal_scroll"
         android:contentDescription="@string/all_dev"
         android:tag="@string/all_dev"
@@ -48,7 +61,7 @@
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="420dp"
+        android:layout_marginTop="300dp"
         >
         <LinearLayout
             android:id="@+id/ScrollLinear"

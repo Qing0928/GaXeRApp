@@ -3,8 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.gaxer">
 
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,13 +18,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GaXeR">
         <activity
+            android:name=".FindDevActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.FINDDEV" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingDevActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.SETTINGDEV" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".AddGroupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.ADDGROUP"/>
+                <category android:name="android.intent.category.ADDGROUP" />
             </intent-filter>
         </activity>
 
@@ -40,7 +64,6 @@
                 <category android:name="android.intent.category.ALL" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -51,7 +74,6 @@
                 <category android:name="android.intent.category.LOGIN" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".StartActivity"
             android:exported="true">
@@ -63,7 +85,6 @@
                 <category android:name="android.intent.category.START" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="true">

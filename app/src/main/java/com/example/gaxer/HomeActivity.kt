@@ -2,29 +2,41 @@ package com.example.gaxer
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
+
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+
 import com.github.mikephil.charting.data.Entry
 import org.json.JSONArray
 import org.json.JSONObject
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 
 
 class HomeActivity : AppCompatActivity() {
-    @SuppressLint("SetTextI18n", "ResourceType", "CommitPrefEdits")
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n", "ResourceType", "CommitPrefEdits", "RtlHardcoded", "SdCardPath")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         val getData = DataProcess()
         //val token:String? = intent.getStringExtra("token")
+
         val pref = getSharedPreferences("info", 0)
         val token:String? = pref.getString("token", null)
         val editor = pref.edit()
@@ -43,7 +55,12 @@ class HomeActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.addDev ->{
+                    /*
+                    intent.addCategory("android.intent.category.FINDDEV")
+                    intent.putExtra("token", token)
+                    startActivity(intent)
 
+                     */
                     return@setOnItemSelectedListener true
                 }
                 R.id.setting->{
@@ -55,6 +72,15 @@ class HomeActivity : AppCompatActivity() {
                 else -> return@setOnItemSelectedListener false
             }
         }
+
+        val testButton = findViewById<MaterialButton>(R.id.material)
+        testButton.setIconResource(R.drawable.home)
+        //testButton.icon = Drawable.createFromPath(R.drawable.home)
+        testButton.iconGravity = MaterialButton.ICON_GRAVITY_TEXT_TOP
+        testButton.iconSize = 100
+        testButton.text = "final"
+
+
         //loadFragment(HomeFragment())
 
         val horizontalScroll = findViewById<LinearLayout>(R.id.HorizontalLinear)
@@ -104,6 +130,7 @@ class HomeActivity : AppCompatActivity() {
                         horizontalScroll.addView(devButton)
                         //leftPosition += 50
                     }
+                    //將警報改為未發送過
                     if(pref.getString(devList[i].toString(), null) == null){
                         editor.putString(devList[i].toString(), "0").apply()
                     }
@@ -116,6 +143,7 @@ class HomeActivity : AppCompatActivity() {
                     val groupCheck:String? = getData.getData("groupcheck?tok=${token}&dev=${devList[i]}")
                     groupCheck?.let { Log.d("groupCheck", it) }
                     if(groupCheck != null && groupCheck != "nan"){
+                        //第二個裝置如果跟上一個裝置同一群組就跳過
                         if (groupCheck == tmp){
                             continue
                         }
@@ -135,19 +163,21 @@ class HomeActivity : AppCompatActivity() {
                                 groupText.layoutParams = textParams
                                 groupText.text = groupCheck.replace("group", "")
                                 groupText.textSize = 20F
-                                //把文字加進CardView
+                                //把文字加進ScrollView
                                 groupScroll.addView(groupText)
 
                                 //宣告CardView
                                 val groupCard = CardView(this)
-                                groupCard.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 350)
+                                groupCard.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400)
                                 val cardParams = groupCard.layoutParams as LinearLayout.LayoutParams
-                                cardParams.topMargin = 40
+                                //cardParams.topMargin = 40
+                                cardParams.gravity = Gravity.CENTER_HORIZONTAL
                                 groupCard.layoutParams = cardParams
                                 groupCard.setBackgroundResource(R.drawable.horizontal_scroll)
                                 //宣告按鈕
                                 if (devGroupList != null) {
                                     var leftMargin = 10
+                                    //將裝置從清單拿出來，逐個放入CardView
                                     for(dev in devGroupList){
                                         val devButton = ImageButton(this)
                                         devButton.setImageResource(R.drawable.gasbottle)
@@ -178,14 +208,93 @@ class HomeActivity : AppCompatActivity() {
                                                 startActivity(intent)
                                             }.start()
                                         }
+                                        //把按鈕加進CardView
                                         groupCard.addView(devButton)
                                         leftMargin += 240
                                     }
+                                    //宣告關閉所有裝置按鈕
+                                    val btnTurnoff = Button(this)
+                                    btnTurnoff.text = "關閉所有裝置"
+                                    btnTurnoff.textSize = 15F
+                                    btnTurnoff.layoutParams = LinearLayout.LayoutParams(
+                                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT)
+                                        .apply {
+                                            marginStart = 235
+                                            topMargin = 270
+                                        }
+                                    btnTurnoff.setOnClickListener {
+                                        var responseGroup = ""
+                                        Thread{
+                                            for (dev in devGroupList){
+                                                responseGroup = getData.getData("swupdate?tok=${token}&dev=${dev}&sw=False")!!
+                                            }
+                                            if(responseGroup == "ok"){
+                                                runOnUiThread {
+                                                    Toast.makeText(this, "群組中的裝置皆已關閉", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }.start()
+                                    }
+                                    groupCard.addView(btnTurnoff)
                                 }
+                                //宣告取消群組按鈕
+                                val unGroup = ImageButton(this)
+                                unGroup.setImageResource(R.drawable.cancel)
+                                unGroup.scaleType = ImageView.ScaleType.FIT_CENTER
+                                unGroup.layoutParams = LinearLayout.LayoutParams(120, 120)
+                                val layoutParams = unGroup.layoutParams as LinearLayout.LayoutParams
+                                layoutParams.marginStart = 650
+                                unGroup.layoutParams = layoutParams
+                                unGroup.setOnClickListener{
+                                    val errorDialog = AlertDialog.Builder(this)
+                                    errorDialog.setTitle("注意")
+                                    errorDialog.setMessage("真的要刪除群組嗎?")
+                                    errorDialog.setCancelable(true)
+                                    errorDialog.setNegativeButton("取消"){_, _ ->}
+                                    errorDialog.setPositiveButton("確定刪除"){_, _ ->
+                                        Thread{
+                                            val responseUnGroup = getData.getData("ungroup?tok=${token}&group=${groupCheck}")
+                                            if(responseUnGroup == "ok"){
+                                                val path = Paths.get("/data/data/com.example.gaxer/shared_prefs/${groupCheck}.xml")
+                                                try {
+                                                    val result = Files.deleteIfExists(path)
+                                                    if (result){
+                                                        runOnUiThread {
+                                                            groupScroll.removeView(groupCard)
+                                                            groupScroll.removeView(groupText)
+                                                            Toast.makeText(this, "刪除群組成功", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                    else{
+                                                        runOnUiThread {
+                                                            Toast.makeText(this, "刪除群組失敗", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                }
+                                                catch (e:IOException){
+                                                    runOnUiThread {
+                                                        Toast.makeText(this, "IOException", Toast.LENGTH_SHORT).show()
+                                                    }
+                                                }
+                                            }
+                                            else{
+                                                runOnUiThread {
+                                                    Toast.makeText(this, "TimeOut", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }.start()
+                                    }
+                                    runOnUiThread {
+                                        errorDialog.show()
+                                    }
+                                }
+                                //把取消群組按鈕加進CardView
+                                groupCard.addView(unGroup)
                                 //把CardView加進去ScrollView
                                 groupScroll.addView(groupCard)
                             }
-                            devGroupList?.get(0)?.let { Log.d("devGroupList", it) }
+                            //devGroupList?.get(0)?.let { Log.d("devGroupList", it) }
                             tmp = groupCheck
                         }
                     }
@@ -211,4 +320,8 @@ class HomeActivity : AppCompatActivity() {
         transaction.commit()
     }
      */
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        //Log.d("BackPressed", "disable")
+    }
 }
