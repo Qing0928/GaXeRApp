@@ -34,24 +34,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="195dp"
-        android:textAlignment="textStart"
-        />
+        android:layout_marginTop="185dp"
+        android:textAlignment="textStart" />
     <ImageView
         android:id="@+id/imageGas"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="95dp"
         android:contentDescription="@string/gasbottle"
         app:srcCompat="@drawable/gas" />
 
+    <TextView
+        android:id="@+id/textDevStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="155dp"
+        android:text="@string/status"
+        android:textSize="20sp"
+        />
     <ImageView
         android:id="@+id/imageDevStatus"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/devstatus"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/greenlight" />
@@ -117,12 +125,18 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/gasSwitch"
+        android:text="@string/gasSwitch"
+        android:textSize="20sp"
+        android:textOn="@string/on"
+        android:textOff="@string/off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="780dp"
         android:thumb="@drawable/custom_sw_thumb"
-        app:track="@drawable/custom_sw_track" />
+        app:track="@drawable/custom_sw_track"
+        app:showText="true"
+        />
 
     <ImageButton
         android:id="@+id/btnBack"

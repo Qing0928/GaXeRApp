@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(){
         val nowGas = findViewById<TextView>(R.id.nowGas)
         val nowBattery = findViewById<TextView>(R.id.nowBattery)
         val nowDevStatus = findViewById<ImageView>(R.id.imageDevStatus)
+        val textDevStatus = findViewById<TextView>(R.id.textDevStatus)
         Thread{
             var url = "resident?tok=${token}&dev=${devName}"
             var response:String? = getData.getData(url)
@@ -64,11 +65,13 @@ class MainActivity : AppCompatActivity(){
             response = getData.getData(url)
             if (response != null && response != "000000"){
                 runOnUiThread{
+                    textDevStatus.text = "裝置發生異常"
                     nowDevStatus.setImageResource(R.drawable.redlight)
                 }
             }
             else{
                 runOnUiThread {
+                    textDevStatus.text = "目前一切正常"
                     nowDevStatus.setImageResource(R.drawable.greenlight)
                 }
             }

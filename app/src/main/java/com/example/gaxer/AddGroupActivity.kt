@@ -132,15 +132,18 @@ class AddGroupActivity : AppCompatActivity() {
                             .add("dev", dev)
                             .build()
                         //發出註冊請求
-                        val registerGroup = getData.postData("groupregister", dataBody)
-                        if (registerGroup != null && registerGroup == "ok"){
-                            runOnUiThread {
-                                Toast.makeText(this,"註冊成功", Toast.LENGTH_SHORT).show()
-                                val intent = Intent("android.intent.action.MAIN")
-                                intent.addCategory("android.intent.category.ALL")
-                                startActivity(intent)
+                        Thread{
+                            val registerGroup = getData.postData("groupregister", dataBody)
+                            Log.d("groupRegister", registerGroup.toString())
+                            if ((registerGroup != null) && (registerGroup.toString() == "ok")){
+                                runOnUiThread {
+                                    Toast.makeText(this,"註冊成功", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent("android.intent.action.MAIN")
+                                    intent.addCategory("android.intent.category.ALL")
+                                    startActivity(intent)
+                                }
                             }
-                        }
+                        }.start()
                     }
                     val prefGroup = getSharedPreferences("group"+groupName.text.toString(), 0)
                     val editGroup = prefGroup.edit()
@@ -154,7 +157,6 @@ class AddGroupActivity : AppCompatActivity() {
                 errorDialog.setMessage("請至少選擇一個裝置")
                 errorDialog.setCancelable(false)
                 errorDialog.setPositiveButton("確定"){_, _ ->
-
                 }
                 runOnUiThread {
                     errorDialog.show()
