@@ -28,30 +28,42 @@ class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
     private fun initData(values:ArrayList<Entry>){
         val dataset = LineDataSet(values, "Remain Gas")
         dataset.mode = LineDataSet.Mode.LINEAR
-        dataset.color = Color.LTGRAY //color of line
-        dataset.lineWidth = 3f// width of line
-        dataset.setDrawCircles(false)
+        dataset.color = Color.rgb(203, 64, 66) //color of line
+        dataset.lineWidth = 6f// width of line
+        dataset.setDrawCircles(true)
         dataset.setDrawValues(true)
+        dataset.valueTextSize = 14f
+        dataset.circleRadius = 7f
+        dataset.setCircleColor(Color.rgb(86, 63, 46))
         val data = LineData(dataset)
         this.lineChart.data = data
+        //this.lineChart.setBackgroundColor(Color.WHITE)
         this.lineChart.invalidate()
     }
     //set xAxis
     private fun setxAxis(){
         val xAxis = this.lineChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.textSize = 10f
+        xAxis.textSize = 14f
+        //xAxis.labelRotationAngle = 10F
         xAxis.textColor = Color.BLACK
+        //xAxis.gridLineWidth = 2F
+        xAxis.setDrawGridLines(true)
+        xAxis.setDrawAxisLine(false)
         xAxis.setLabelCount(4, true)
     }
     //set yAxis
     private fun setyAxis(){
         lineChart.axisRight.isEnabled = false
         val leftAxis = lineChart.axisLeft
-        leftAxis.textSize = 10f
+        leftAxis.textSize = 14f
+        //leftAxis.axisLineWidth = 4f
         leftAxis.textColor = Color.BLACK
         leftAxis.axisMinimum = 0f
-        leftAxis.axisMaximum = 7000f
+        leftAxis.axisMaximum = 10000f
+        //leftAxis.gridLineWidth = 2F
+        leftAxis.setDrawAxisLine(false)
+        leftAxis.setDrawGridLines(true)
         leftAxis.setLabelCount(6, true)
     }
     //initChart
@@ -63,10 +75,11 @@ class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
 
         val legend = lineChart.legend
         legend.isEnabled = false
-
+        //lineChart.extraRightOffset = 10f
+        lineChart.setExtraOffsets(0f, 0f, 25f, 15f)
         lineChart.setDrawBorders(true)
+        lineChart.setBorderWidth(2F)
         lineChart.setBorderColor(Color.BLACK)
-
         lineChart.setNoDataText("Nothing")
         lineChart.setNoDataTextColor(Color.RED)
 

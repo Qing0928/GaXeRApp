@@ -42,7 +42,7 @@ class DataProcess{
             val dataBody = JSONObject(gas.getString("data"))
             val time = dataBody.getString("time")
             //timeStamp to dateTime
-            val simpleDateFormat = SimpleDateFormat("MM-dd HH:mm", Locale.TAIWAN)
+            val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.TAIWAN)
             gasTime.add(simpleDateFormat.format(Date(time.toLong()*1000)))
 
         }

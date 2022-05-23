@@ -1,33 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container"
+    android:background="#B3FAD689"
     tools:context=".HomeActivity">
+
+    <ImageView
+        android:id="@+id/imageLogo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/logo"
+        app:srcCompat="@drawable/meter" />
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_text"
+        android:textSize="30sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        />
 
     <TextView
         android:id="@+id/allText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_marginStart="55dp"
-        android:text="@string/all_dev" />
+        android:layout_marginTop="125dp"
+        android:text="@string/all_dev"
+        android:textSize="20sp" />
 
-    <!--app:icon="@drawable/home"
-
-        app:iconSize="50dp" -->
-    <com.google.android.material.button.MaterialButton
+    <!--<com.google.android.material.button.MaterialButton
         android:id="@+id/material"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/test"
+        android:textAlignment="center"
+        app:iconSize="50dp"
+        android:textColor="#000000"
         app:backgroundTint="#1E88E5"
         app:iconGravity="textTop" />
+         -->
 
+    <HorizontalScrollView
+        android:id="@+id/HorizontalScroll"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/horizontal_scroll"
+        android:contentDescription="@string/all_dev"
+        android:tag="@string/all_dev"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/HorizontalLinear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationbottomView"
@@ -37,32 +75,13 @@
         android:background="#ffff"
         app:menu="@menu/menu_navigationbar" />
 
-    <HorizontalScrollView
-        android:id="@+id/HorizontalScroll"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="120dp"
-        android:background="@drawable/horizontal_scroll"
-        android:contentDescription="@string/all_dev"
-        android:tag="@string/all_dev"
-        android:visibility="visible"
-        >
-        <LinearLayout
-            android:id="@+id/HorizontalLinear"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-        </LinearLayout>
-    </HorizontalScrollView>
-
     <ScrollView
         android:id="@+id/gruopScrollView"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="300dp"
-        >
+        android:layout_marginTop="300dp">
+
         <LinearLayout
             android:id="@+id/ScrollLinear"
             android:layout_width="match_parent"

@@ -70,7 +70,22 @@ class AlertService: Service() {
                             .split(":")
                         val devName = tmp[0]
                         val warningCode = tmp[1]
-                        if (warningCode != "0000" && pref.getString(devName, null) == "0"){
+                        if (warningCode != "000000" && pref.getString(devName, null) == "0"){
+                            var msgError = ""
+                            for ((index, value) in warningCode.withIndex()){
+                                if (value.toString() != "0"){
+                                    when(index.toString()){
+                                        "0" ->{msgError += "群組異常\n"}
+                                        "1" ->{msgError += "強烈搖晃\n"}
+                                        "2" ->{msgError += "火焰異常\n"}
+                                        "3" ->{msgError += "電量不足\n"}
+                                        "4" ->{msgError += "瓦斯洩漏\n"}
+                                        "5" ->{msgError += "溫度過高\n"}
+                                    }
+                                }
+                            }
+                            createNotification("裝置$devName 發生問題", msgError, "1", "裝置發生異常")
+                            /*
                             when(warningCode){
                                 "0001" ->{
                                     createNotification("裝置:${devName} 發生問題","溫度異常", "0001", devName+"溫度異常")
@@ -88,6 +103,8 @@ class AlertService: Service() {
                                     createNotification("裝置:${devName} 發生問題","異常搖晃", "0011", devName+"異常搖晃")
                                 }
                             }
+
+                             */
                             editor.putString(devName, "1").apply()
                             if(i == alertDev.length()-1){
                                 Timer().cancel()

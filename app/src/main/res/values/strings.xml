@@ -39,4 +39,7 @@
     <string name="free_dev">可用的裝置</string>
     <string name="btn_group">確定新增</string>
     <string name="name_group">群組名稱</string>
+    <string name="back">上一頁</string>
+    <string name="logo">logo</string>
+    <string name="home_text">Hello</string>
 </resources>

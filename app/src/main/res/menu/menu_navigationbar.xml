@@ -4,10 +4,13 @@
         android:title="@string/home"
         android:id="@+id/home"
         android:icon="@drawable/home"/>
+
+    <!---->
     <item
         android:title="@string/addDev"
         android:id="@+id/addDev"
         android:icon="@drawable/plus"/>
+
     <item
         android:title="@string/new_group"
         android:id="@+id/setting"

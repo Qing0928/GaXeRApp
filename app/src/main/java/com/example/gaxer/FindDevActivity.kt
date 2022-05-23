@@ -34,12 +34,15 @@ class FindDevActivity : AppCompatActivity() {
                     startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
+                /*
                 R.id.addDev ->{
                     intent.addCategory("android.intent.category.FINDDEV")
                     intent.putExtra("token", token)
                     startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
+
+                 */
                 R.id.setting->{
                     intent.addCategory("android.intent.category.ADDGROUP")
                     intent.putExtra("token", token)

@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.FormBody
@@ -37,10 +34,13 @@ class AddGroupActivity : AppCompatActivity() {
                     startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
+                /*
                 R.id.addDev ->{
 
                     return@setOnItemSelectedListener true
                 }
+
+                 */
                 R.id.setting->{
                     intent.addCategory("android.intent.category.ADDGROUP")
                     intent.putExtra("token", token)
@@ -104,7 +104,7 @@ class AddGroupActivity : AppCompatActivity() {
                 errorDialog.setMessage("群組名稱未輸入")
                 errorDialog.setCancelable(false)
                 errorDialog.setPositiveButton("確定"){_, _ ->
-
+                    //do nothing
                 }
                 runOnUiThread {
                     errorDialog.show()
@@ -132,9 +132,16 @@ class AddGroupActivity : AppCompatActivity() {
                             .add("dev", dev)
                             .build()
                         //發出註冊請求
-                        getData.postData("groupregister", dataBody)
+                        val registerGroup = getData.postData("groupregister", dataBody)
+                        if (registerGroup != null && registerGroup == "ok"){
+                            runOnUiThread {
+                                Toast.makeText(this,"註冊成功", Toast.LENGTH_SHORT).show()
+                                val intent = Intent("android.intent.action.MAIN")
+                                intent.addCategory("android.intent.category.ALL")
+                                startActivity(intent)
+                            }
+                        }
                     }
-
                     val prefGroup = getSharedPreferences("group"+groupName.text.toString(), 0)
                     val editGroup = prefGroup.edit()
                     editGroup.putString("group", devCheckBoxCheck.toString()).apply()

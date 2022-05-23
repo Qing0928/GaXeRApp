@@ -1,6 +1,7 @@
 package com.example.gaxer
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -30,8 +31,18 @@ class MainActivity : AppCompatActivity(){
         val xLabelLastActivity: ArrayList<String> = intent.getStringArrayListExtra("xLabel") as ArrayList<String>
         lineChart.updateData(xAxisDataLastActivity, xLabelLastActivity)
 
-
-        //頁面常駐資料載入
+        //返回按鈕
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            val intent = Intent("android.intent.action.MAIN")
+            intent.addCategory("android.intent.category.ALL")
+            startActivity(intent)
+        }
+        //裝置名稱
+        val textDevName = findViewById<TextView>(R.id.devName)
+        textDevName.text = devName
+        textDevName.textSize = 18f
+        //常駐資料載入
         val nowTemp = findViewById<TextView>(R.id.nowTemp)
         val nowGas = findViewById<TextView>(R.id.nowGas)
         val nowBattery = findViewById<TextView>(R.id.nowBattery)
@@ -51,7 +62,7 @@ class MainActivity : AppCompatActivity(){
             //用圖標顯示裝置是否可用
             url ="safestatus?tok=${token}&dev=${devName}"
             response = getData.getData(url)
-            if (response != null && response != "0000"){
+            if (response != null && response != "000000"){
                 runOnUiThread{
                     nowDevStatus.setImageResource(R.drawable.redlight)
                 }
@@ -104,12 +115,17 @@ class MainActivity : AppCompatActivity(){
             }
         }.start()
 
+        //開關點擊監聽器
         gasSwitch.setOnCheckedChangeListener {_, isChecked ->
+            //點擊是on
+            var msgError = ""
             if(isChecked){
                 Thread{
                     var url = "safestatus?tok=${token}&dev=${devName}"
                     val response:String? = getData.getData(url)
-                    if (response != null && response == "0000") {
+                    //確認狀態正常，開啟
+                    if (response != null && response == "000000") {
+                        //發出開啟訊號
                         url = "swupdate?tok=${token}&sw=True&dev=${devName}"
                         getData.getData((url))//更改開關狀態
                         runOnUiThread {
@@ -117,10 +133,32 @@ class MainActivity : AppCompatActivity(){
                             Toast.makeText(this, "閥門已經開啟", Toast.LENGTH_SHORT).show()
                         }
                     }
+                    //狀態異常，關閉畫面上的開關
                     else{
                         if (response != null){
                             Log.d("status", response)
+                            for ((index, value) in response.withIndex()) {
+                                if (value.toString() != "0"){
+                                    when(index.toString()){
+                                        "0" ->{msgError += "群組異常\n"}
+                                        "1" ->{msgError += "強烈搖晃\n"}
+                                        "2" ->{msgError += "火焰異常\n"}
+                                        "3" ->{msgError += "電量不足\n"}
+                                        "4" ->{msgError += "瓦斯洩漏\n"}
+                                        "5" ->{msgError += "溫度過高\n"}
+                                    }
+                                }
+                            }
+                            errorDialog.setTitle("警告")
+                            errorDialog.setMessage(msgError)
+                            errorDialog.setPositiveButton("確定"){_, _ ->
+                                gasSwitch.isChecked = false
+                            }
+                            runOnUiThread {
+                                errorDialog.show()
+                            }
                         }
+                        /*
                         when(response){
                             "0001" ->{
                                 errorDialog.setTitle("警告")
@@ -178,6 +216,7 @@ class MainActivity : AppCompatActivity(){
                                 }
                             }
                         }
+                        */
                         runOnUiThread {
                             nowDevStatus.setImageResource(R.drawable.redlight)
                             Toast.makeText(this, "請排除異常後再啟動裝置", Toast.LENGTH_SHORT).show()
@@ -185,6 +224,7 @@ class MainActivity : AppCompatActivity(){
                     }
                 }.start()
             }
+            //點擊是off
             else{
                 Thread{
                     val url = "swupdate?tok=${token}&sw=False&dev=${devName}"
@@ -200,5 +240,8 @@ class MainActivity : AppCompatActivity(){
         }
 
 
+    }
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 }

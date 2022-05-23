@@ -8,10 +8,11 @@ class BottomNavigation(bottomNav:BottomNavigationView){
             when(it.itemId){
                 R.id.home ->{
                     return@setOnItemSelectedListener true
-                }
+                }/*
                 R.id.addDev ->{
                     return@setOnItemSelectedListener true
                 }
+                */
                 R.id.setting->{
                     return@setOnItemSelectedListener true
                 }

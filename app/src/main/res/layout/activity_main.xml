@@ -1,174 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:ignore="MissingClass">
-
-    <Button
-        android:id="@+id/btn_get"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/refresh"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.951"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.865" />
+    android:background="#B3FAD689"
+    tools:context=".MainActivity">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
-        android:layout_width="382dp"
-        android:layout_height="490dp"
-        android:padding="9dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.658">
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="250dp"
+        android:padding="9dp">
 
     </com.github.mikephil.charting.charts.LineChart>
 
-    <TextView
-        android:id="@+id/nowGas"
-        android:layout_width="150dp"
-        android:layout_height="32dp"
-        android:text="@string/ppm"
-        android:textAlignment="textStart"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173" />
+    <ImageButton
+        android:id="@+id/imageButtonRefresh"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="195dp"
+        android:layout_marginEnd="20dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/refresh"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/refresh" />
 
+    <TextView
+        android:id="@+id/devName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="195dp"
+        android:textAlignment="textStart"
+        />
     <ImageView
         android:id="@+id/imageGas"
         android:layout_width="85dp"
         android:layout_height="85dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="105dp"
         android:contentDescription="@string/gasbottle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.113"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.117"
-        app:srcCompat="@drawable/gasbottle" />
+        app:srcCompat="@drawable/gas" />
+
+    <ImageView
+        android:id="@+id/imageDevStatus"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="70dp"
+        android:contentDescription="@string/devstatus"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/greenlight" />
+
+    <ImageView
+        android:id="@+id/imageBattery"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="80dp"
+        android:contentDescription="@string/battery"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/smartphone_charger" />
+
+    <TextView
+        android:id="@+id/nowBattery"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="80dp"
+        android:text="@string/nowBattery"
+        android:textAlignment="textStart"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/imageTemp"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="120dp"
         android:contentDescription="@string/temp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126"
-        app:srcCompat="@drawable/thermometer" />
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/temperature" />
 
     <TextView
         android:id="@+id/nowTemp"
-        android:layout_width="70dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="120dp"
+        android:gravity="end"
         android:text="@string/nowTemp"
-        android:textAlignment="textStart"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.689"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
-
-    <ImageView
-        android:id="@+id/imageDevStatus"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:contentDescription="@string/devstatus"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.097"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.072"
-        app:srcCompat="@drawable/greenlight"
-        tools:ignore="ImageContrastCheck" />
-
-    <TextView
-        android:id="@+id/nowBattery"
-        android:layout_width="70dp"
-        android:layout_height="32dp"
-        android:text="@string/nowBattery"
-        android:textAlignment="textStart"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.689"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.082" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/imageVirus"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="160dp"
         android:contentDescription="@string/virus"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.173"
-        app:srcCompat="@drawable/virus" />
+        app:srcCompat="@drawable/poison" />
 
-    <ImageView
-        android:id="@+id/imageBattery"
+    <TextView
+        android:id="@+id/nowGas"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/battery"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.082"
-        app:srcCompat="@drawable/battery" />
+        android:layout_height="32dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="160dp"
+        android:text="@string/ppm"
+        android:textAlignment="textStart"
+        android:textSize="20sp" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/gasSwitch"
-        android:layout_width="126dp"
-        android:layout_height="54dp"
-        android:text="@string/gasSwitch"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.917"
-        app:showText="true" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="780dp"
+        android:thumb="@drawable/custom_sw_thumb"
+        app:track="@drawable/custom_sw_track" />
 
     <ImageButton
-        android:id="@+id/imageButtonRefresh"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:background="#00FFFFFF"
-        android:contentDescription="@string/refresh"
+        android:contentDescription="@string/back"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.903"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.254"
-        app:srcCompat="@drawable/refresh" />
+        app:srcCompat="@drawable/back_arrow" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

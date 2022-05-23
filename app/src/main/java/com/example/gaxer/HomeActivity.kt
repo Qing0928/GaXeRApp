@@ -2,26 +2,20 @@ package com.example.gaxer
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.Icon
-
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-
 import com.github.mikephil.charting.data.Entry
 import org.json.JSONArray
 import org.json.JSONObject
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButton
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -54,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
                     startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
+                /*
                 R.id.addDev ->{
                     /*
                     intent.addCategory("android.intent.category.FINDDEV")
@@ -63,6 +58,7 @@ class HomeActivity : AppCompatActivity() {
                      */
                     return@setOnItemSelectedListener true
                 }
+                 */
                 R.id.setting->{
                     intent.addCategory("android.intent.category.ADDGROUP")
                     intent.putExtra("token", token)
@@ -73,21 +69,12 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        val testButton = findViewById<MaterialButton>(R.id.material)
-        testButton.setIconResource(R.drawable.home)
-        //testButton.icon = Drawable.createFromPath(R.drawable.home)
-        testButton.iconGravity = MaterialButton.ICON_GRAVITY_TEXT_TOP
-        testButton.iconSize = 100
-        testButton.text = "final"
-
-
         //loadFragment(HomeFragment())
 
         val horizontalScroll = findViewById<LinearLayout>(R.id.HorizontalLinear)
         val groupScroll = findViewById<LinearLayout>(R.id.ScrollLinear)
         var devList:JSONArray
         stopService(alertBack)
-
         Thread{
             var response:String? = getData.getData("devlist?tok=${token}")
             if (response!=null){
@@ -99,14 +86,14 @@ class HomeActivity : AppCompatActivity() {
                     //取得裝置清單，自動在畫面上新增按鈕
                     runOnUiThread{
                         val devButton = ImageButton(this)
-                        devButton.setImageResource(R.drawable.gasbottle)
+                        devButton.setImageResource(R.drawable.gas)
                         devButton.scaleType = ImageView.ScaleType.FIT_CENTER
-                        devButton.layoutParams = LinearLayout.LayoutParams(200, 200)
-                        val layoutParams = devButton.layoutParams as LinearLayout.LayoutParams
-                        layoutParams.topMargin = 50
-                        //layoutParams.marginStart = leftPosition
-                        devButton.layoutParams = layoutParams
-                        //devButton.id = i
+                        devButton.layoutParams = LinearLayout.LayoutParams(
+                            200,
+                            200)
+                            .apply {
+                                topMargin = 20
+                            }
                         devButton.setOnClickListener {
                             val xAxisData = ArrayList<Entry>()
                             xAxisData.clear()
@@ -127,6 +114,7 @@ class HomeActivity : AppCompatActivity() {
                                 startActivity(intent)
                             }.start()
                         }
+                        //把裝置按鈕加進橫向滾動
                         horizontalScroll.addView(devButton)
                         //leftPosition += 50
                     }
@@ -137,6 +125,7 @@ class HomeActivity : AppCompatActivity() {
                     else{
                         editor.putString(devList[i].toString(), "0").apply()
                     }
+                    //leftPosition += 100
                 }
                 var tmp = ""
                 for (i in 0 until devList.length()){
@@ -180,7 +169,7 @@ class HomeActivity : AppCompatActivity() {
                                     //將裝置從清單拿出來，逐個放入CardView
                                     for(dev in devGroupList){
                                         val devButton = ImageButton(this)
-                                        devButton.setImageResource(R.drawable.gasbottle)
+                                        devButton.setImageResource(R.drawable.gas)
                                         devButton.scaleType = ImageView.ScaleType.FIT_CENTER
                                         devButton.layoutParams = LinearLayout.LayoutParams(200, 200)
                                         val layoutParams = devButton.layoutParams as LinearLayout.LayoutParams
@@ -294,7 +283,6 @@ class HomeActivity : AppCompatActivity() {
                                 //把CardView加進去ScrollView
                                 groupScroll.addView(groupCard)
                             }
-                            //devGroupList?.get(0)?.let { Log.d("devGroupList", it) }
                             tmp = groupCheck
                         }
                     }
