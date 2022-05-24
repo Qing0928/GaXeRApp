@@ -14,15 +14,17 @@
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/drawable/ic_launcher_custom_background.xml" value="0.239" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/drawable/linearbackground.xml" value="0.3455" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout-v26/activity_main.xml" value="0.38645833333333335" />
-        <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_add_group.xml" value="0.3172295852928602" />
+        <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_add_group.xml" value="0.33" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_find_dev.xml" value="0.3172295852928602" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_home.xml" value="0.33" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_login.xml" value="0.3172295852928602" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_setting_dev.xml" value="0.3172295852928602" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_start.xml" value="0.3172295852928602" />
+        <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/activity_thank.xml" value="0.3172295852928602" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/layout/linear_background.xml" value="0.3172295852928602" />
+        <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/menu-v26/menu_navigationbar.xml" value="0.33" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/menu/menu_navigationbar.xml" value="0.3172295852928602" />
         <entry key="..\:/Users/rs040/Desktop/GaXeRApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.299" />
         <entry key="..\:/Users/rs040/StudioProjects/GaXeRApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.323" />
@@ -48,7 +50,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.33" />
+        <option name="scale" value="0.14" />
       </ProjectState>
     </option>
   </component>

@@ -43,6 +43,7 @@
     <string name="logo">logo</string>
     <string name="home_text">Hello</string>
     <string name="status">目前一切正常</string>
+    <string name="thank">鳴謝</string>
     <string name="on">開</string>
     <string name="off">關</string>
 </resources>

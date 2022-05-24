@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B3FAD689"
     tools:context=".AddGroupActivity">
 
     <TextView
         android:id="@+id/textViewfreeDev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
         android:text="@string/free_dev"
-        android:textSize="20sp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationbottomView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#ffff"
+        android:background="#A8D8B9"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:menu="@menu/menu_navigationbar" />
 
     <ScrollView
         android:id="@+id/freeDevScrollView"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="500dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:contentDescription="@string/free_dev"
+        android:layout_marginTop="130dp"
         android:background="@drawable/horizontal_scroll"
-        >
+        android:contentDescription="@string/free_dev">
 
         <LinearLayout
             android:id="@+id/ScrollLinear"
@@ -42,24 +45,26 @@
 
     <Button
         android:id="@+id/btn_group"
-        android:layout_marginTop="700dp"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_group" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="740dp"
+        android:background="@drawable/horizontal_scroll"
+        android:text="@string/btn_group"
+        android:textColor="#0F2540" />
 
     <EditText
         android:id="@+id/editTextGroupname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="640dp"
+        android:layout_marginTop="660dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/name_group"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:minHeight="48dp"
-        android:textColorHint="#757575" />
+        android:textColorHint="#616161" />
 
 
 </FrameLayout>

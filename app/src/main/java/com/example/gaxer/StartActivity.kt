@@ -18,8 +18,8 @@ class StartActivity : AppCompatActivity() {
 
         val devPref = getSharedPreferences("dev", 0)
         val devEditor = devPref.edit()
-        devEditor.putString("gas1", "24:0A:C4:59:A5:44").apply()
-        devEditor.putString("gas2", "34:94:54:24:85:0C").apply()
+        devEditor.putString("gas1", "50:0A:C4:59:A5:44").apply()
+        devEditor.putString("gas2", "50:94:54:24:85:0C").apply()
 
 
         //讀取看是否有使用者資料

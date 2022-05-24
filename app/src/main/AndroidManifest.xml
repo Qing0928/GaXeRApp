@@ -17,8 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GaXeR">
         <activity
-            android:name=".FindDevActivity"
+            android:name=".ThankActivity"
             android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.THANK" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".FindDevActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

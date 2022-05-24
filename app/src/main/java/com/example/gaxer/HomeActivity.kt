@@ -43,22 +43,18 @@ class HomeActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.home ->{
-                    intent.addCategory("android.intent.category.ALL")
-                    intent.putExtra("token", token)
-                    startActivity(intent)
+                    runOnUiThread {
+                        Toast.makeText(this, "已經在首頁囉", Toast.LENGTH_SHORT).show()
+                    }
                     return@setOnItemSelectedListener true
                 }
-                /*
-                R.id.addDev ->{
-                    /*
-                    intent.addCategory("android.intent.category.FINDDEV")
-                    intent.putExtra("token", token)
-                    startActivity(intent)
 
-                     */
+                R.id.addDev ->{
+                    intent.addCategory("android.intent.category.THANK")
+                    startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
-                 */
+
                 R.id.setting->{
                     intent.addCategory("android.intent.category.ADDGROUP")
                     intent.putExtra("token", token)

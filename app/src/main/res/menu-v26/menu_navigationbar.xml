@@ -3,17 +3,20 @@
     <item
         android:title="@string/new_group"
         android:id="@+id/setting"
-        android:icon="@drawable/management"/>
+        android:icon="@drawable/management"
+        android:iconTint="@color/black"/>
 
     <item
         android:title="@string/home"
         android:id="@+id/home"
-        android:icon="@drawable/house"/>
+        android:icon="@drawable/house"
+        android:iconTint="@color/black" />
     <!---->
 
     <item
         android:title="@string/thank"
         android:id="@+id/addDev"
-        android:icon="@drawable/plus"/>
+        android:icon="@drawable/list"
+        android:iconTint="@color/black"/>
 
 </menu>

@@ -34,17 +34,17 @@ class AddGroupActivity : AppCompatActivity() {
                     startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
-                /*
-                R.id.addDev ->{
 
+                R.id.addDev ->{
+                    intent.addCategory("android.intent.category.THANK")
+                    startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
 
-                 */
                 R.id.setting->{
-                    intent.addCategory("android.intent.category.ADDGROUP")
-                    intent.putExtra("token", token)
-                    startActivity(intent)
+                    runOnUiThread {
+                        Toast.makeText(this, "已經在設定群組囉", Toast.LENGTH_SHORT).show()
+                    }
                     return@setOnItemSelectedListener true
                 }
                 else -> return@setOnItemSelectedListener false
@@ -163,5 +163,9 @@ class AddGroupActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 }
