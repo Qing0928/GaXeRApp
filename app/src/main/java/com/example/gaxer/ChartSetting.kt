@@ -1,6 +1,7 @@
 package com.example.gaxer
 
 import android.graphics.Color
+import android.util.Log
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.LineData
@@ -26,7 +27,7 @@ class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
     }
     //init data
     private fun initData(values:ArrayList<Entry>){
-        val dataset = LineDataSet(values, "Remain Gas")
+        val dataset = LineDataSet(values, "瓦斯餘量")
         dataset.mode = LineDataSet.Mode.LINEAR
         dataset.color = Color.rgb(203, 64, 66) //color of line
         dataset.lineWidth = 6f// width of line
@@ -72,9 +73,15 @@ class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
         setyAxis()
         val description:Description = lineChart.description
         description.isEnabled = false
+        //description.text = "剩餘量"
+        //description.textSize = 15f
+        //description.position
+        //Log.d("chart", description.position.toString())
+        //description.setPosition(120f, 50f)
 
         val legend = lineChart.legend
-        legend.isEnabled = false
+        legend.textSize = 18f
+        legend.isEnabled = true
         //lineChart.extraRightOffset = 10f
         lineChart.setExtraOffsets(0f, 0f, 25f, 15f)
         lineChart.setDrawBorders(true)
