@@ -61,7 +61,7 @@ class ChartSetting(private val lineChart:LineChart, dataSet:ArrayList<Entry>?) {
         //leftAxis.axisLineWidth = 4f
         leftAxis.textColor = Color.BLACK
         leftAxis.axisMinimum = 0f
-        leftAxis.axisMaximum = 10000f
+        leftAxis.axisMaximum = 4000f
         //leftAxis.gridLineWidth = 2F
         leftAxis.setDrawAxisLine(false)
         leftAxis.setDrawGridLines(true)

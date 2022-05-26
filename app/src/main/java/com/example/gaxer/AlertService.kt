@@ -95,7 +95,7 @@ class AlertService: Service() {
                             }
                         }
                     }
-                    catch (e:TimeoutException){
+                    catch (e:Exception){
                         Log.d("Timeout", e.toString())
                     }
                 }.start()

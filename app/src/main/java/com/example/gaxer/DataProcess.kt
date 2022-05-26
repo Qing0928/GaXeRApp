@@ -57,8 +57,9 @@ class DataProcess{
             val gas = JSONObject(tmp.getString(devName))
             val dataBody = JSONObject(gas.getString("data"))
             val remaining = dataBody.getString("remaining")
-
-            gasRemaining.add(remaining)
+            val remainingInt = remaining.toFloat() -6000
+            Log.d("remain", remainingInt.toString())
+            gasRemaining.add(remainingInt.toString())
         }
         return gasRemaining
     }
